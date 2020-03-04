@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -199,16 +200,25 @@ namespace WindowsFormsApp1
                 if (rtb.Text != "")
                 {
                     LexicoController.Instance.Analizer(rtb.Text);
-                    foreach(Token t in TokenController.Instance.getArrayListTokens())
+                    /*foreach(Token t in TokenController.Instance.getArrayListTokens())
                     {
                         Console.WriteLine("ID: " + t.Description + " - " + t.Lexema);
-                    }
+                    }*/
                 }
                 else
                 {
                     alertMessage("No existe texto para analizar D:");
                 }
             }
+
+            ////// PARTE DE LOS CONJUNTOS
+            SetController.Instance.assemble_Sets();
+            SetController.Instance.ShowSets();
+            ///// Parte de la expresion regular
+            RegularExpressionController.Instance.GetElements();
+            RegularExpressionController.Instance.Show();
+
+
         }
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)
