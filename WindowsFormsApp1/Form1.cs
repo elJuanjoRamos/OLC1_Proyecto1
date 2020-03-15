@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1.Automata;
 using WindowsFormsApp1.Controller;
 using WindowsFormsApp1.Model;
 
@@ -199,11 +200,15 @@ namespace WindowsFormsApp1
                 RichTextBox rtb = c as RichTextBox;
                 if (rtb.Text != "")
                 {
+
+                    TokenController.Instance.clearListaTokens();
+                    TokenController.Instance.clearListaTokensError();
                     LexicoController.Instance.Analizer(rtb.Text);
                     /*foreach(Token t in TokenController.Instance.getArrayListTokens())
                     {
                         Console.WriteLine("ID: " + t.Description + " - " + t.Lexema);
                     }*/
+
                 }
                 else
                 {
@@ -211,24 +216,39 @@ namespace WindowsFormsApp1
                 }
             }
 
-            ////// PARTE DE LOS CONJUNTOS
-            SetController.Instance.assemble_Sets();
-            SetController.Instance.ShowSets();
-            ///// Parte de la expresion regular
-            RegularExpressionController.Instance.GetElements();
-            RegularExpressionController.Instance.Show();
-
+            //////// PARTE DE LOS CONJUNTOS
+            //SetController.Instance.assemble_Sets();
+            //SetController.Instance.ShowSets();
+            /////// Parte de la expresion regular
+            RegularExpressionController.Instance.GetElements(Application.StartupPath);
+            RegularExpressionController.Instance.imprimir();
+            AFN aFN = new AFN();
+            foreach (RegularExpression c in RegularExpressionController.Instance.getArrayListER())
+            {
+                aFN.construirAutomata(c.Elements);
+            }
+            Automata.Automata afn_result = aFN.Afn;
+            Console.WriteLine(afn_result);
+            ThompsonControlador.Instance.generarDOT("AFN", afn_result);
 
         }
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TokenController.Instance.reportToken();
+            foreach(Token t in TokenController.Instance.getArrayListTokens())
+            {
+                Console.WriteLine(t.Lexema);
+            }
         }
 
         private void reporteDeErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TokenController.Instance.reportError();
+            foreach (Token t in TokenController.Instance.getArrayListErrors())
+            {
+                Console.WriteLine(t.Lexema);
+            }
         }
     }
 }

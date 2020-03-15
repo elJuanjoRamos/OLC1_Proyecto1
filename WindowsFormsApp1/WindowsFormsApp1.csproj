@@ -46,9 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automata\AFN.cs" />
+    <Compile Include="Automata\Automata.cs" />
     <Compile Include="Controller\LexicoController.cs" />
+    <Compile Include="Controller\NodeController.cs" />
     <Compile Include="Controller\RegularExpressionController.cs" />
     <Compile Include="Controller\SetController.cs" />
+    <Compile Include="Controller\ThompsonControlador.cs" />
     <Compile Include="Controller\TokenController.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -56,9 +60,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lists\ConcatList.cs" />
+    <Compile Include="Model\Estado.cs" />
     <Compile Include="Model\RegularExpression.cs" />
     <Compile Include="Model\Set.cs" />
     <Compile Include="Model\Token.cs" />
+    <Compile Include="Model\Transicion.cs" />
+    <Compile Include="Nodes\Concat.cs" />
+    <Compile Include="Nodes\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

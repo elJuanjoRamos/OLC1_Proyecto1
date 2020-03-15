@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsFormsApp1.Model;
+using WindowsFormsApp1.Nodes;
+using WindowsFormsApp1.Lists;
 namespace WindowsFormsApp1.Controller
 {
     class RegularExpressionController
     {
         private readonly static RegularExpressionController instance = new RegularExpressionController();
         private ArrayList arrayListER = new ArrayList();
-
+        private Stack stk = new Stack();
+        private ConcatList concatlist = new ConcatList();
         public RegularExpressionController()
         {
 
@@ -24,9 +27,9 @@ namespace WindowsFormsApp1.Controller
             }
         }
 
-        public void GetElements()
+        public void GetElements(String path)
         {
-
+            String texto = "";
             ArrayList l = TokenController.Instance.getArrayListTokens();
             for (int i = 0; i < l.Count; i++)
             {
@@ -34,8 +37,7 @@ namespace WindowsFormsApp1.Controller
                 Token t = (Token)l[i];
                 if (t.Lexema.Equals(">"))
                 {
-                    String texto = "";
-
+                    
                     //busca el nombre de la expresion
                     for (int j = i; j > 0; j--)
                     {
@@ -47,51 +49,99 @@ namespace WindowsFormsApp1.Controller
                         }
                     }
 
-                    Token t1 = (Token)l[i + 1]; // token de inicio de la expresion
-                    if (t1 != null && t1.Lexema.Equals("."))
+                //Token t1 = (Token)l[i + 1]; // token de inicio de la expresion
+                    
+                    //itera en la expresion y guarda los elementos
+                    for (int j = i + 1; j < l.Count; j++)
                     {
-                        //itera en la expresion y guarda los elementos
-                        for (int j = i + 1; j < l.Count; j++)
+                        Token t2 = (Token)l[j];
+                        if (!t2.Lexema.Equals(";")) //El limite de la expresion es el punto y coma
                         {
-                            Token t2 = (Token)l[j];
-                            if (!t2.Lexema.Equals(";")) //El limite de la expresion es el punto y coma
+                            if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
                             {
-                                if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
+                                if (t2.Description.Equals("TK_Suma")) //Hace reemplazo de +a -> . a* a 
+                                {
+                                    temp.Add(".");
+                                    temp.Add(((Token)l[j+1]).Lexema);
+                                    temp.Add("*");
+                                    temp.Add(((Token)l[j + 1]).Lexema);
+                                    j = j + 1;
+                                } else
                                 {
                                     temp.Add(t2.Lexema);
                                 }
-                            }
-                            else
-                            {
-                                Insert(texto, temp);
-                                i = j;
-                                break;
-                            }
+                                    
+                            } 
+                        }
+                        else
+                        {
+                            Insert(texto, temp, path);
+                            i = j;
+                            break;
                         }
                     }
                 }
             }
+            
         }
 
-        public void Insert(String name, ArrayList ar)
+        public void Insert(String name, ArrayList ar, String path)
         {
             ArrayList vuelta = new ArrayList(); // array que va a almacenar los elementos en orden inverso
             for (int i = ar.Count-1; i >= 0; i--)
             {
-                vuelta.Add(ar[i]);
+                Console.WriteLine(ar[i].ToString());
+                if (ar[i].Equals("?"))//ε
+                {
+                    vuelta.Add("\"ε\"");
+                    vuelta.Add("|");
+                    //NodeController.getInstancia().InsertStack("|");
+                   // Console.WriteLine("|");
+                   
+                    //NodeController.getInstancia().InsertStack("ε");
+                    //Console.WriteLine("\"ε\"");
+                } else
+                {
+                    vuelta.Add(ar[i]);
+                   // NodeController.getInstancia().InsertStack(ar[i].ToString());
+                   
+                }
             }
-
+            /*for (int i = 0; i < ar.Count; i++)
+            {
+                vuelta.Add(ar[i]);
+                //NodeController.getInstancia().InsertStack(ar[i].ToString());
+            }*/
             RegularExpression re = new RegularExpression(name, vuelta);
             arrayListER.Add(re);
+            //NodeController.getInstancia().Print(name, path);
+            //NodeController.getInstancia().Print(name, path);
+        }
+
+        public ArrayList getArrayListER()
+        {
+            return arrayListER;
         }
 
 
-        public void Show()
+        public void imprimir()
         {
-            foreach (RegularExpression regular in arrayListER)
+            foreach(RegularExpression c in arrayListER)
             {
-                regular.toString();
+                Console.WriteLine(c.Elements);
+                foreach(String x in c.Elements)
+                {
+                    Console.WriteLine(x);
+                }
             }
         }
+
+
+
+
+
+
+
+
     }
 }
