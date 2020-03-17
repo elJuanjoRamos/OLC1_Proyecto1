@@ -35,23 +35,23 @@ namespace WindowsFormsApp1.Controller
 
             
             pilaClosure.Push(actual);
-            
+            resultado.Add(eClosureEstado); //la operacion e-Closure debe tener el estado aplicado
+
             while (pilaClosure.Count > 0)
             {
                 actual = pilaClosure.Pop();
-
+                
                 foreach (Transicion t in (ArrayList)actual.Transiciones)
                 {
-                    //Console.WriteLine(t);
+                    Console.WriteLine(t);
                     if (t.Simbolo.Equals("ε") && !resultado.Contains(t.Fin))
                     {
-                        //Console.WriteLine("VALOR : " + t);
+                        Console.WriteLine("VALOR : " + t);
                         resultado.Add(t.Fin);
                         pilaClosure.Push(t.Fin);
                     }
                 }
             }
-            resultado.Add(eClosureEstado); //la operacion e-Closure debe tener el estado aplicado
             return resultado;
         }
 

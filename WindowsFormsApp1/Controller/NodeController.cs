@@ -20,6 +20,7 @@ namespace WindowsFormsApp1.Controller
         int index = 0;
         int cant = 0;
         Node raiz = null;
+        String regularExpression = "";
 
 
         public static NodeController instancia;
@@ -54,35 +55,23 @@ namespace WindowsFormsApp1.Controller
             this.list.Clear();
         }
 
+        public void GetStringTree()
+        {
+            Node newRoot = (Node)stk.Pop();
+
+
+
+
+
+            stk.Push(newRoot);
+        }
+
+
         public void Print(String name, String path)
         {
             Node left = (Node)stk.Pop();
-            //Node right = new Node("#");
-            //raiz = new Node(".", right, left, false);
             raiz = left;
-            /*Node r = new Node("|");
-            Node a = new Node("a");
-            Node b = new Node("b");
-            r.LeftChild = a;
-            r.RightChild = b;*/
-            //Node p = new Node(".");
-            //Node c = new Node("c");
-            //p.LeftChild = r;
-            //p.RightChild = c;
-
-            //raiz = r;
-
-            //PreOrden(raiz);
-            //inOrder(raiz);
-            //PostOrden(raiz);
-
-            //manda la raiz a numerar sus nodos
-            //leafNode(raiz);
-            //setDesition(raiz);
-            //setRootAntNext(raiz);
-            //imprime el arbol raiz
             raiz.print(path, name + "Tree.jpg");
-            //printElement(name, 1);
             index++;
         }
         public void InsertStack(String s)
@@ -188,6 +177,7 @@ namespace WindowsFormsApp1.Controller
             }
         }
 
+        string nuevoTexo = "";
         private void setDesition(Node n)
         {
             if (n != null)
@@ -290,13 +280,13 @@ namespace WindowsFormsApp1.Controller
         }
 
 
-        public void inOrder(Node n)
+        public void InOrder(Node n)
         {
             if (n != null)
             {
-                inOrder(n.LeftChild);
-                Console.Write(n.Element + ",");
-                inOrder(n.RightChild);
+                InOrder(n.LeftChild);
+                Console.WriteLine(n.Element + ", " );
+                InOrder(n.RightChild);
             }
         }
 
@@ -316,10 +306,48 @@ namespace WindowsFormsApp1.Controller
             {
                 PostOrden(n.LeftChild);
                 PostOrden(n.RightChild);
-                Console.Write(n.Element);
+                Console.WriteLine(n.Element);
             }
         }
 
 
+
+
+        //METODO QUE CONVIERTE LA EXPRESION REGULAR DE PREFIJA A POSTFIJA
+        public void ConvertExpression(Node nroot)
+        {
+            if (nroot !=null)
+            {
+                if (nroot.LeftChild == null && nroot.RightChild == null)
+                {
+                    regularExpression = regularExpression + nroot.Element;
+                } else
+                {
+                    if (nroot.Element.Equals("*"))
+                    {
+                        regularExpression = regularExpression + "(";
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression = regularExpression + ")*";
+                    }
+                    else if (nroot.Element.Equals("|"))
+                    {
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression = regularExpression + "|";
+                        ConvertExpression(nroot.RightChild);
+                    }
+                    else if (nroot.Element.Equals("."))
+                    {
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression = regularExpression + ".";
+                        ConvertExpression(nroot.RightChild);
+                    }
+                }
+            }
+        }
+        
+        public String getRegularExpression()
+        {
+            return regularExpression;
+        }
     }
 }

@@ -90,20 +90,19 @@ namespace WindowsFormsApp1.Controller
             ArrayList vuelta = new ArrayList(); // array que va a almacenar los elementos en orden inverso
             for (int i = ar.Count-1; i >= 0; i--)
             {
-                Console.WriteLine(ar[i].ToString());
                 if (ar[i].Equals("?"))//ε
                 {
                     vuelta.Add("\"ε\"");
                     vuelta.Add("|");
-                    //NodeController.getInstancia().InsertStack("|");
+                    NodeController.getInstancia().InsertStack("|");
                    // Console.WriteLine("|");
                    
                     //NodeController.getInstancia().InsertStack("ε");
                     //Console.WriteLine("\"ε\"");
                 } else
                 {
-                    vuelta.Add(ar[i]);
-                   // NodeController.getInstancia().InsertStack(ar[i].ToString());
+                   vuelta.Add(ar[i]);
+                   NodeController.getInstancia().InsertStack(ar[i].ToString());
                    
                 }
             }
@@ -115,7 +114,7 @@ namespace WindowsFormsApp1.Controller
             RegularExpression re = new RegularExpression(name, vuelta);
             arrayListER.Add(re);
             //NodeController.getInstancia().Print(name, path);
-            //NodeController.getInstancia().Print(name, path);
+            NodeController.getInstancia().Print(name, path);
         }
 
         public ArrayList getArrayListER()
@@ -126,14 +125,7 @@ namespace WindowsFormsApp1.Controller
 
         public void imprimir()
         {
-            foreach(RegularExpression c in arrayListER)
-            {
-                Console.WriteLine(c.Elements);
-                foreach(String x in c.Elements)
-                {
-                    //Console.WriteLine(x);
-                }
-            }
+           
         }
 
 

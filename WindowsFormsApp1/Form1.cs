@@ -222,8 +222,11 @@ namespace WindowsFormsApp1
             /////// Parte de la expresion regular
             RegularExpressionController.Instance.GetElements(Application.StartupPath);
             RegularExpressionController.Instance.imprimir();
-
-            AFN aFN = new AFN();
+            
+            //Convierte la expresion regular de prefija a pos
+            NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
+            
+            /*AFN aFN = new AFN();
             foreach (RegularExpression c in RegularExpressionController.Instance.getArrayListER())
             {
                 aFN.construirAutomata(c.Elements);
@@ -234,7 +237,7 @@ namespace WindowsFormsApp1
 
             AFD AFD = new AFD();
             AFD.conversionAFN(afn_result);
-
+            */
             //Automata.Automata afd_result = AFD.Afd;
             //Console.WriteLine(afd_result);
             //ThompsonControlador.Instance.generarDOT("AFD", afd_result);
