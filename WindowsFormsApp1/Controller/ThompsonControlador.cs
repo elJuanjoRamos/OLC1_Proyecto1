@@ -15,7 +15,7 @@ namespace WindowsFormsApp1.Controller
         private readonly static ThompsonControlador instance = new ThompsonControlador();
         private String resultado;
 
-        private ThompsonControlador()
+        public ThompsonControlador()
         {
         }
 
@@ -29,20 +29,52 @@ namespace WindowsFormsApp1.Controller
 
         public HashSet<Estado> eClosure(Estado eClosureEstado)
         {
-            Stack pilaClosure = new Stack();
+            Stack<Estado> pilaClosure = new Stack<Estado>();
             Estado actual = eClosureEstado;
             HashSet<Estado> resultado = new HashSet<Estado>();
 
+            
             pilaClosure.Push(actual);
+            
             while (pilaClosure.Count > 0)
             {
-                actual = (Estado)pilaClosure.Pop();
+                actual = pilaClosure.Pop();
 
-                foreach (Transicion t in (List<Transicion>)actual.Transiciones)
+                foreach (Transicion t in (ArrayList)actual.Transiciones)
                 {
-
+                    //Console.WriteLine(t);
                     if (t.Simbolo.Equals("ε") && !resultado.Contains(t.Fin))
                     {
+                        //Console.WriteLine("VALOR : " + t);
+                        resultado.Add(t.Fin);
+                        pilaClosure.Push(t.Fin);
+                    }
+                }
+            }
+            resultado.Add(eClosureEstado); //la operacion e-Closure debe tener el estado aplicado
+            return resultado;
+        }
+
+
+        public HashSet<Estado> eClosure2(Estado eClosureEstado)
+        {
+            Stack<Estado> pilaClosure = new Stack<Estado>();
+            Estado actual = eClosureEstado;
+            HashSet<Estado> resultado = new HashSet<Estado>();
+
+
+            pilaClosure.Push(actual);
+
+            while (pilaClosure.Count > 0)
+            {
+                actual = pilaClosure.Pop();
+
+                foreach (Transicion t in (ArrayList)actual.Transiciones)
+                {
+                    //Console.WriteLine(t);
+                    if (t.Simbolo.Equals("ε") && !resultado.Contains(t.Fin))
+                    {
+                        //Console.WriteLine("VALOR : " + t);
                         resultado.Add(t.Fin);
                         pilaClosure.Push(t.Fin);
                     }
@@ -54,13 +86,18 @@ namespace WindowsFormsApp1.Controller
 
         public HashSet<Estado> move(HashSet<Estado> estados, String simbolo)
         {
-            HashSet<Estado> alcanzados = new HashSet<Estado>();
-            IEnumerator<Estado> iterador = estados.GetEnumerator();
-            while (iterador.MoveNext())
-            {
+            Console.WriteLine("el simbolo es " + simbolo);
 
-                foreach(Transicion t in (List<Transicion>)iterador.Current.Transiciones)
+            HashSet<Estado> alcanzados = new HashSet<Estado>();
+           
+            //Console.WriteLine("ESTADOS");
+            foreach (Estado iterador in estados)
+            {
+                
+                foreach (Transicion t in (ArrayList)iterador.Transiciones)
                 {
+                    //Console.WriteLine(t.Simbolo);
+
                     Estado siguiente = t.Fin;
                     String simb = (String)t.Simbolo;
                     if (simb.Equals(simbolo))
@@ -73,6 +110,58 @@ namespace WindowsFormsApp1.Controller
         }
 
         public Estado move(Estado estado, String simbolo)
+        {
+            List<Estado> alcanzados = new List<Estado>();
+
+            foreach (Transicion t in (ArrayList)estado.Transiciones)
+            {
+                Estado siguiente = t.Fin;
+                String simb = (String)t.Simbolo;
+
+                if (simb.Equals(simbolo) && !alcanzados.Contains(siguiente))
+                {
+                    alcanzados.Add(siguiente);
+                }
+
+            }
+
+            return alcanzados[0];
+        }
+
+        /*public HashSet<Estado> move(HashSet<Estado> estados, String simbolo)
+        {
+            HashSet<Estado> alcanzados = new HashSet<Estado>();
+            //IEnumerator<Estado> iterador = estados.GetEnumerator();
+
+            foreach (Estado iterador in estados)
+            {
+                foreach (Transicion t in (List<Transicion>)iterador.Transiciones)
+                {
+                    Estado siguiente = t.Fin;
+                    String simb = (String)t.Simbolo;
+                    if (simb.Equals(simbolo))
+                    {
+                        alcanzados.Add(siguiente);
+                    }
+                }
+            }
+            /*while (iterador.MoveNext())
+            {
+
+                foreach(Transicion t in (List<Transicion>)iterador.Current.Transiciones)
+                {
+                    Estado siguiente = t.Fin;
+                    String simb = (String)t.Simbolo;
+                    if (simb.Equals(simbolo))
+                    {
+                        alcanzados.Add(siguiente);
+                    }
+                }
+            }*/
+        /*    return alcanzados;
+        }
+
+       /* public Estado moves(Estado estado, String simbolo)
         {
             List<Estado> alcanzados = new List<Estado>();
 
@@ -89,7 +178,7 @@ namespace WindowsFormsApp1.Controller
             }
 
             return alcanzados[0];
-        }
+        }*/
 
         public Boolean simular(ArrayList regex, Automata.Automata automata)
         {
@@ -168,10 +257,11 @@ namespace WindowsFormsApp1.Controller
             //transiciones
             for (int i = 0; i < automataFinito.Estados.Count; i++)
             {
-                List<Transicion> t = automataFinito.Estados[i].Transiciones;
+
+                ArrayList t = (automataFinito.Estados[i]).Transiciones;
                 for (int j = 0; j < t.Count; j++)
                 {
-                    texto += "\t" + t[j].DOT_String() + "\n";
+                    texto += "\t" + ((Transicion)t[j]).DOT_String() + "\n";
                 }
 
             }
@@ -182,7 +272,7 @@ namespace WindowsFormsApp1.Controller
             //Application.StartupPath
             String path = Application.StartupPath;
             var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + path + "\\" + nombreArchivo + ".png\"   ";
-            Console.WriteLine(command);
+            //Console.WriteLine(command);
 
             var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
             var proc = new System.Diagnostics.Process();

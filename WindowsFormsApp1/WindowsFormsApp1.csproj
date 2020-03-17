@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automata\AFD.cs" />
     <Compile Include="Automata\AFN.cs" />
     <Compile Include="Automata\Automata.cs" />
     <Compile Include="Controller\LexicoController.cs" />
@@ -62,8 +63,10 @@
     </Compile>
     <Compile Include="Lists\ConcatList.cs" />
     <Compile Include="Model\Estado.cs" />
+    <Compile Include="Model\Nodo.cs" />
     <Compile Include="Model\RegularExpression.cs" />
     <Compile Include="Model\Set.cs" />
+    <Compile Include="Model\SyntaxTree.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="Model\Transicion.cs" />
     <Compile Include="Nodes\Concat.cs" />

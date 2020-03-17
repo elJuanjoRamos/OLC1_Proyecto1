@@ -222,14 +222,22 @@ namespace WindowsFormsApp1
             /////// Parte de la expresion regular
             RegularExpressionController.Instance.GetElements(Application.StartupPath);
             RegularExpressionController.Instance.imprimir();
+
             AFN aFN = new AFN();
             foreach (RegularExpression c in RegularExpressionController.Instance.getArrayListER())
             {
                 aFN.construirAutomata(c.Elements);
             }
             Automata.Automata afn_result = aFN.Afn;
-            Console.WriteLine(afn_result);
+            //Console.WriteLine(afn_result);
             ThompsonControlador.Instance.generarDOT("AFN", afn_result);
+
+            AFD AFD = new AFD();
+            AFD.conversionAFN(afn_result);
+
+            //Automata.Automata afd_result = AFD.Afd;
+            //Console.WriteLine(afd_result);
+            //ThompsonControlador.Instance.generarDOT("AFD", afd_result);
 
         }
 
@@ -238,7 +246,7 @@ namespace WindowsFormsApp1
             TokenController.Instance.reportToken();
             foreach(Token t in TokenController.Instance.getArrayListTokens())
             {
-                Console.WriteLine(t.Lexema);
+                //Console.WriteLine(t.Lexema);
             }
         }
 
@@ -247,7 +255,7 @@ namespace WindowsFormsApp1
             TokenController.Instance.reportError();
             foreach (Token t in TokenController.Instance.getArrayListErrors())
             {
-                Console.WriteLine(t.Lexema);
+                //Console.WriteLine(t.Lexema);
             }
         }
     }

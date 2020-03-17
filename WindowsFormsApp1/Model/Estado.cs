@@ -9,9 +9,9 @@ namespace WindowsFormsApp1.Model
 {
     class Estado    {
         private int idEstado;
-        private List<Transicion> transiciones = new List<Transicion>();
+        private ArrayList transiciones = new ArrayList();
 
-        public Estado(int idEstado, List<Transicion> transiciones)
+        public Estado(int idEstado, ArrayList transiciones)
         {
             this.IdEstado = idEstado;
             this.Transiciones = transiciones;
@@ -27,7 +27,7 @@ namespace WindowsFormsApp1.Model
         }
 
         public int IdEstado { get => idEstado; set => idEstado = value; }
-        public List<Transicion> Transiciones { get => transiciones; set => transiciones = value; }
+        public ArrayList Transiciones { get => transiciones; set => transiciones = value; }
 
         public void agregarTransicion(Transicion t)
         {

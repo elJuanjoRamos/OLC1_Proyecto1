@@ -131,7 +131,7 @@ namespace WindowsFormsApp1.Controller
                 Console.WriteLine(c.Elements);
                 foreach(String x in c.Elements)
                 {
-                    Console.WriteLine(x);
+                    //Console.WriteLine(x);
                 }
             }
         }
