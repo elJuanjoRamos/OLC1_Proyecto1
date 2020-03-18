@@ -338,7 +338,6 @@ namespace WindowsFormsApp1.Controller
                     else if (nroot.Element.Equals("."))
                     {
                         ConvertExpression(nroot.LeftChild);
-                        regularExpression = regularExpression + ".";
                         ConvertExpression(nroot.RightChild);
                     }
                 }

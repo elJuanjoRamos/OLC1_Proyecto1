@@ -225,17 +225,29 @@ namespace WindowsFormsApp1
             
             //Convierte la expresion regular de prefija a pos
             NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
-            
-            /*AFN aFN = new AFN();
-            foreach (RegularExpression c in RegularExpressionController.Instance.getArrayListER())
-            {
-                aFN.construirAutomata(c.Elements);
-            }
-            Automata.Automata afn_result = aFN.Afn;
-            //Console.WriteLine(afn_result);
-            ThompsonControlador.Instance.generarDOT("AFN", afn_result);
 
-            AFD AFD = new AFD();
+
+            string regularExpresion = NodeController.getInstancia().getRegularExpression();
+            string regex = "";
+            try
+            {
+                regex = RegexController.Instance.infixToPostfix(regularExpresion);
+            }
+            catch (Exception a)
+            {
+                Console.WriteLine("Expresión mal ingresada");
+            }
+
+            Console.WriteLine(regex);
+            //AFN aFN = new AFN();
+
+            //aFN.construirAutomata(regex);
+
+            //Automata.Automata afn_result = aFN.Afn;
+            //Console.WriteLine(afn_result);
+            //ThompsonControlador.Instance.generarDOT("AFN", afn_result);
+
+            /*AFD AFD = new AFD();
             AFD.conversionAFN(afn_result);
             */
             //Automata.Automata afd_result = AFD.Afd;

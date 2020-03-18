@@ -51,6 +51,7 @@
     <Compile Include="Automata\Automata.cs" />
     <Compile Include="Controller\LexicoController.cs" />
     <Compile Include="Controller\NodeController.cs" />
+    <Compile Include="Controller\RegexController.cs" />
     <Compile Include="Controller\RegularExpressionController.cs" />
     <Compile Include="Controller\SetController.cs" />
     <Compile Include="Controller\ThompsonControlador.cs" />

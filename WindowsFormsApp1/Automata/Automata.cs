@@ -45,13 +45,13 @@ namespace WindowsFormsApp1.Automata
         }
 
         //DEFINIR ALFABETO
-        public void CrearAlfabeto(ArrayList elementos)
+        public void CrearAlfabeto(String regex)
         {
-            foreach (String x in elementos)
+            foreach (char x in regex.ToCharArray())
             {
-                if (x != "|" && x != "." && x != "*" )
+                if (x.ToString() != "|" && x.ToString() != "." && x.ToString() != "*" )
                 {
-                    Alfabeto.Add(x);
+                    Alfabeto.Add(x.ToString());
                 }
             }
         }

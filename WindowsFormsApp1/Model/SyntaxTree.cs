@@ -45,7 +45,7 @@ namespace WindowsFormsApp1.Model
                 if (!nodo.Regex[0].Equals('*') && !nodo.Regex[0].Equals('|') && !nodo.Regex[0].Equals('.'))
                 {
 
-                    String sub_cadena = texto_postfix.substring(1);
+                    String sub_cadena = texto_postfix.Substring(1);
                     //System.out.println(sub_cadena);
                     Nodo nuevo = new Nodo((sub_cadena));
                     nuevo.setId("" + letra_inicial);
@@ -70,7 +70,7 @@ namespace WindowsFormsApp1.Model
                     {
                         //obtener un operador
                         //se le asigna el nombre al nodo principal
-                        String sub_cadena = texto_postfix.substring(1);
+                        String sub_cadena = texto_postfix.Substring(1);
                         //System.out.println(sub_cadena);
                         Nodo nuevo = new Nodo(sub_cadena);
                         nuevo.setId((T)("" + letra_inicial));
@@ -79,7 +79,7 @@ namespace WindowsFormsApp1.Model
                         nuevo.setIzquierda(nodoPila);
                         arrayNodos.add(nuevo);
 
-                        /*String sub_cadena = texto_prefix.substring(1);//falta validar...
+                        /*String sub_cadena = texto_prefix.Substring(1);//falta validar...
                         //print("subcadena: "+sub_cadena);
                         nodo.setIzquierda(new Nodo(obtener_operando(sub_cadena)));
                         //para generar recursivamente el nodo*/
@@ -98,10 +98,10 @@ namespace WindowsFormsApp1.Model
                         // nodo.setId((T) (""+letra_inicial));
 
 
-                        String sub_cadena = texto_postfix.substring(1);
+                        String sub_cadena = texto_postfix.Substring(1);
                         //System.out.println(sub_cadena);
                         /* String primer_operando = this.obtener_operando(sub_cadena);
-                         String segundo_operando = this.obtener_operando(sub_cadena.substring(primer_operando.length()));*/
+                         String segundo_operando = this.obtener_operando(sub_cadena.Substring(primer_operando.Length()));*/
                       /*  Nodo nuevo = new Nodo(sub_cadena);
                         nuevo.setId("" + letra_inicial);
 
