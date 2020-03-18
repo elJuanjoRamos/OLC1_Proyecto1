@@ -227,8 +227,10 @@ namespace WindowsFormsApp1
             NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
 
 
-            string regularExpresion = NodeController.getInstancia().getRegularExpression();
-            string regex = "";
+            ArrayList regularExpresion = NodeController.getInstancia().getRegularExpression();
+            ArrayList regex = new ArrayList();
+
+            
             try
             {
                 regex = RegexController.Instance.infixToPostfix(regularExpresion);
@@ -238,14 +240,13 @@ namespace WindowsFormsApp1
                 Console.WriteLine("Expresión mal ingresada");
             }
 
-            Console.WriteLine(regex);
-            //AFN aFN = new AFN();
+            AFN aFN = new AFN();
 
-            //aFN.construirAutomata(regex);
+            aFN.construirAutomata(regex);
 
-            //Automata.Automata afn_result = aFN.Afn;
+            Automata.Automata afn_result = aFN.Afn;
             //Console.WriteLine(afn_result);
-            //ThompsonControlador.Instance.generarDOT("AFN", afn_result);
+            ThompsonControlador.Instance.generarDOT("AFN", afn_result);
 
             /*AFD AFD = new AFD();
             AFD.conversionAFN(afn_result);

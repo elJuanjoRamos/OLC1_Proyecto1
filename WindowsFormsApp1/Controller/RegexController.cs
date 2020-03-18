@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,17 +35,21 @@ namespace WindowsFormsApp1.Controller
 	     * @param c character
 	     * @return corresponding precedence
 	     */
-        private int getPrecedencia(Char c)
+        private int getPrecedencia(String c)
         {
 
-            if (c.Equals('('))
+            if (c.Equals("("))
             {
                 return 1;
-            } else if (c.Equals('|'))
+            } else if (c.Equals("|"))
             {
                 return 2;
             }
-            else if (c.Equals('.') || c.Equals('*') || c.Equals('+') || c.Equals('?'))
+            else if (c.Equals("."))
+            {
+                return 3;
+            }
+            else if (c.Equals("*") || c.Equals("+") || c.Equals("?"))
             {
                 return 4;
             } else
@@ -86,22 +91,23 @@ namespace WindowsFormsApp1.Controller
          * @param regex expresion regular
          * @return expresion regular modificada sin el operador ?
          */
-        public String QAvreviature(String regex)
+        public String QAvreviature(ArrayList regex)
         {
-            for (int i = 0; i < regex.Length; i++)
+            return null;
+            /*for (int i = 0; i < regex.Count; i++)
             {
                 
-                char ch = regex[i];
+                String ch = (String)regex[i];
 
-                if (ch.Equals('?'))
+                if (ch.Equals("?"))
                 {
-                    if (regex[i - 1] == ')')
+                    if (((String)regex[i - 1]) == ")")
                     {
                         regex = InsertCharAt(regex, i, "|" + "ε" + ")");
                         int j = i;
                         while (j != 0)
                         {
-                            if (regex[j] == '(')
+                            if ((String)regex[j] == "(")
                             {
                                 break;
                             }
@@ -121,7 +127,7 @@ namespace WindowsFormsApp1.Controller
                 }
             }
             regex = BalanceParentheses(regex);
-            return regex;
+            return regex;*/
         }
 
         /**
@@ -195,7 +201,7 @@ namespace WindowsFormsApp1.Controller
         {
             //sirve para buscar el '(' correcto cuando  hay () en medio
             // de la cerradura positiva
-            int compare = 0;
+            /*int compare = 0;
 
             for (int i = 0; i < regex.Length; i++)
             {
@@ -245,64 +251,65 @@ namespace WindowsFormsApp1.Controller
 
                 }
 
-            }
-            regex = BalanceParentheses(regex);
+            }*/
+            //regex = BalanceParentheses(regex);
             return regex;
         }
 
 
-        public String FormatRegEx(String regex)
+        public ArrayList FormatRegEx(ArrayList regex)
         {
-            regex = regex.Trim();
-            regex = QAvreviature(regex);
-            regex = KleeneAbreviature(regex);
-            String regexExplicit = "";
-            List<char> operadores = new List<char>();
-            operadores.Add('|');
-            operadores.Add('?');
-            operadores.Add('+');
-            operadores.Add('*');
-            List<char> operadoresBinarios = new List<char>();
-            operadoresBinarios.Add('|');
+            //regex = regex.Trim();
+            //regex = QAvreviature(regex);
+            //regex = KleeneAbreviature(regex);
+            ArrayList regexExplicit = new ArrayList();
+            List<String> operadores = new List<String>();
+            operadores.Add("|");
+            operadores.Add("?");
+            operadores.Add("+");
+            operadores.Add("*");
+            List<String> operadoresBinarios = new List<String>();
+            operadoresBinarios.Add("|");
 
             //recorrer la cadena
-            for (int i = 0; i < regex.Length; i++)
+            for (int i = 0; i < regex.Count; i++)
             {
-                char c1 = regex[i];
+                String c1 = (String)regex[i];
 
-                if (i + 1 < regex.Length)
+                if (i + 1 < regex.Count)
                 {
 
-                    char c2 = regex[i + 1];
+                    String c2 = (String)regex[i + 1];
 
-                    regexExplicit += c1;
+                    regexExplicit.Add(c1);
 
                     //mientras la cadena no incluya operadores definidos, será una concatenación implicita
-                    if (!c1.Equals('(') && !c2.Equals(')') && !operadores.Contains(c2) && !operadoresBinarios.Contains(c1))
+                    if (!c1.Equals("(") && !c2.Equals(")") && !operadores.Contains(c2) && !operadoresBinarios.Contains(c1))
                     {
-                        regexExplicit += '.';
+                        regexExplicit.Add(".");
 
                     }
 
                 }
             }
-            regexExplicit += regex[regex.Length - 1];
+            regexExplicit.Add(regex[regex.Count - 1]);
 
 
             return regexExplicit;
         }
 
-        public String abreviacionOr(String regex)
+        public ArrayList abreviacionOr(ArrayList regex)
         {
-            String resultado ="";
+            return regex;
+            /*ArrayList resultado =new ArrayList();
             try
             {
-                for (int i = 0; i < regex.Length; i++)
+                for (int i = 0; i < regex.Count; i++)
                 {
-                    char ch = regex[i];
-                    if (ch == '[')
+                    String ch = (String)regex[i];
+                    if (ch == "[")
                     {
-                        if (regex[i + 2] == '-')
+                        if (((String)regex[i + 2]) == "-")
                         {
                             int inicio = regex[i + 1];
                             int fin = regex[i + 3];
@@ -335,7 +342,7 @@ namespace WindowsFormsApp1.Controller
                 resultado = " ";
             }
 
-            return resultado;
+            return resultado;*/
         }
 
         public String abreviacionAnd(String regex)
@@ -385,28 +392,27 @@ namespace WindowsFormsApp1.Controller
 	 * @param regex notacion infix 
 	 * @return notacion postfix 
 	 */
-        public String infixToPostfix(String regex)
+        public ArrayList infixToPostfix(ArrayList regex)
         {
-            Console.WriteLine("la expresion es " + regex);
-            String postfix = "";
-            regex = abreviacionOr(regex);
-            regex = abreviacionAnd(regex);
-            Stack<char> stack = new Stack<char>();
+            ArrayList postfix = new ArrayList();
+            //regex = abreviacionOr(regex);
+            //regex = abreviacionAnd(regex);
+            Stack<String> stack = new Stack<String>();
 
-            String formattedRegEx = FormatRegEx(regex);
+            ArrayList formattedRegEx = FormatRegEx(regex);
             //System.out.println(formattedRegEx);
-            foreach(char c in formattedRegEx.ToCharArray())
+            foreach(String c in formattedRegEx)
             {
                 switch (c)
                 {
-                    case '(':
+                    case "(":
                         stack.Push(c);
                         break;
 
-                    case ')':
-                        while (!stack.Peek().Equals('('))
+                    case ")":
+                        while (!stack.Peek().Equals("("))
                         {
-                            postfix += stack.Pop();
+                            postfix.Add(stack.Pop());
                         }
                         stack.Pop();
                         break;
@@ -414,14 +420,14 @@ namespace WindowsFormsApp1.Controller
                     default:
                         while (stack.Count() > 0)
                         {
-                            char peekedChar = stack.Peek();
-
+                            String peekedChar = stack.Peek();
                             int peekedCharPrecedence = getPrecedencia(peekedChar);
                             int currentCharPrecedence = getPrecedencia(c);
 
+
                             if (peekedCharPrecedence >= currentCharPrecedence)
                             {
-                                postfix += stack.Pop();
+                                postfix.Add(stack.Pop());
 
                             }
                             else
@@ -436,8 +442,7 @@ namespace WindowsFormsApp1.Controller
             }
 
             while (stack.Count() > 0)
-                postfix += stack.Pop();
-
+                postfix.Add(stack.Pop());
             return postfix;
         }
 

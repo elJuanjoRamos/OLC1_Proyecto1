@@ -27,21 +27,21 @@ namespace WindowsFormsApp1.Automata
            
         }
 
-        public void construirAutomata(String regex)
+        public void construirAutomata(ArrayList arrayList)
         {
             Stack pilaAFN = new Stack();
 
-            foreach (char c in regex.ToCharArray())
+            foreach (String c in arrayList)
             {
                 //Console.WriteLine(c);
                 switch (c)
                 {
-                    case '*':
+                    case "*":
                         Automata kleene = cerraduraKleene((Automata)pilaAFN.Pop());
                         pilaAFN.Push(kleene);
                         this.Afn = kleene;
                         break;
-                    case '.':
+                    case ".":
                         Automata concat_param1 = (Automata)pilaAFN.Pop();
                         Automata concat_param2 = (Automata)pilaAFN.Pop();
                         Automata concat_result = concatenacion(concat_param1, concat_param2);
@@ -50,7 +50,7 @@ namespace WindowsFormsApp1.Automata
                         this.Afn = concat_result;
                         break;
 
-                    case '|':
+                    case "|":
 
                         Automata union_param1 = (Automata)pilaAFN.Pop();
                         Automata union_param2 = (Automata)pilaAFN.Pop();
@@ -64,13 +64,13 @@ namespace WindowsFormsApp1.Automata
 
                     default:
                         //crear un automata con cada simbolo
-                        Automata simple = afnSimple(c.ToString());
+                        Automata simple = afnSimple(c);
                         pilaAFN.Push(simple);
                         this.Afn = simple;
                         break;
                 }
             }
-            this.Afn.CrearAlfabeto(regex);
+            this.Afn.CrearAlfabeto(arrayList);
             this.Afn.Tipo = "AFN";
         }
 

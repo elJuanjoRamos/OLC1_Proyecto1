@@ -20,7 +20,7 @@ namespace WindowsFormsApp1.Controller
         int index = 0;
         int cant = 0;
         Node raiz = null;
-        String regularExpression = "";
+        ArrayList regularExpression = new ArrayList();
 
 
         public static NodeController instancia;
@@ -320,19 +320,21 @@ namespace WindowsFormsApp1.Controller
             {
                 if (nroot.LeftChild == null && nroot.RightChild == null)
                 {
-                    regularExpression = regularExpression + nroot.Element;
+                    regularExpression.Add(nroot.Element);
                 } else
                 {
                     if (nroot.Element.Equals("*"))
                     {
-                        regularExpression = regularExpression + "(";
+                        regularExpression.Add("(");
                         ConvertExpression(nroot.LeftChild);
-                        regularExpression = regularExpression + ")*";
+                        regularExpression.Add(")");
+                        regularExpression.Add("*");
+
                     }
                     else if (nroot.Element.Equals("|"))
                     {
                         ConvertExpression(nroot.LeftChild);
-                        regularExpression = regularExpression + "|";
+                        regularExpression.Add("|");
                         ConvertExpression(nroot.RightChild);
                     }
                     else if (nroot.Element.Equals("."))
@@ -344,7 +346,7 @@ namespace WindowsFormsApp1.Controller
             }
         }
         
-        public String getRegularExpression()
+        public ArrayList getRegularExpression()
         {
             return regularExpression;
         }
