@@ -43,10 +43,8 @@ namespace WindowsFormsApp1.Controller
                 
                 foreach (Transicion t in (ArrayList)actual.Transiciones)
                 {
-                    Console.WriteLine(t);
                     if (t.Simbolo.Equals("ε") && !resultado.Contains(t.Fin))
                     {
-                        Console.WriteLine("VALOR : " + t);
                         resultado.Add(t.Fin);
                         pilaClosure.Push(t.Fin);
                     }
@@ -56,14 +54,15 @@ namespace WindowsFormsApp1.Controller
         }
 
 
-        public HashSet<Estado> eClosure2(Estado eClosureEstado)
+        public ArrayList eClosure2(Estado eClosureEstado)
         {
             Stack<Estado> pilaClosure = new Stack<Estado>();
             Estado actual = eClosureEstado;
-            HashSet<Estado> resultado = new HashSet<Estado>();
+            ArrayList resultado = new ArrayList();
 
 
             pilaClosure.Push(actual);
+            resultado.Add(eClosureEstado); //la operacion e-Closure debe tener el estado aplicado
 
             while (pilaClosure.Count > 0)
             {
@@ -71,16 +70,13 @@ namespace WindowsFormsApp1.Controller
 
                 foreach (Transicion t in (ArrayList)actual.Transiciones)
                 {
-                    //Console.WriteLine(t);
                     if (t.Simbolo.Equals("ε") && !resultado.Contains(t.Fin))
                     {
-                        //Console.WriteLine("VALOR : " + t);
                         resultado.Add(t.Fin);
                         pilaClosure.Push(t.Fin);
                     }
                 }
             }
-            resultado.Add(eClosureEstado); //la operacion e-Closure debe tener el estado aplicado
             return resultado;
         }
 
@@ -106,6 +102,32 @@ namespace WindowsFormsApp1.Controller
                     }
                 }
             }
+            return alcanzados;
+        }
+
+
+        public ArrayList move2(ArrayList estados, String simbolo)
+        {
+            Console.WriteLine("el simbolo es " + simbolo);
+
+            ArrayList alcanzados = new ArrayList();
+
+
+            for (int i = 0; i < estados.Count; i++)
+            {
+                Estado a = (Estado)estados[i];
+                foreach (Transicion t in (ArrayList)a.Transiciones)
+                {
+                    Estado siguiente = t.Fin;
+                    String simb = (String)t.Simbolo;
+                    if (simb.Equals(simbolo))
+                    {
+                        alcanzados.Add(siguiente);
+                    }
+                }
+
+            }
+
             return alcanzados;
         }
 

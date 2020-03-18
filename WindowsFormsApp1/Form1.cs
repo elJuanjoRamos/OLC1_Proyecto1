@@ -204,6 +204,7 @@ namespace WindowsFormsApp1
                     TokenController.Instance.clearListaTokens();
                     TokenController.Instance.clearListaTokensError();
                     LexicoController.Instance.Analizer(rtb.Text);
+                    NodeController.getInstancia().ClearRegularExpression();
                     /*foreach(Token t in TokenController.Instance.getArrayListTokens())
                     {
                         Console.WriteLine("ID: " + t.Description + " - " + t.Lexema);
@@ -245,15 +246,17 @@ namespace WindowsFormsApp1
             aFN.construirAutomata(regex);
 
             Automata.Automata afn_result = aFN.Afn;
-            //Console.WriteLine(afn_result);
-            ThompsonControlador.Instance.generarDOT("AFN", afn_result);
+            
+            
+            Console.WriteLine(afn_result);
+            //ThompsonControlador.Instance.generarDOT("AFN", afn_result);
 
-            /*AFD AFD = new AFD();
+            AFD AFD = new AFD();
             AFD.conversionAFN(afn_result);
-            */
-            //Automata.Automata afd_result = AFD.Afd;
-            //Console.WriteLine(afd_result);
-            //ThompsonControlador.Instance.generarDOT("AFD", afd_result);
+            
+            Automata.Automata afd_result = AFD.Afd;
+            Console.WriteLine(afd_result);
+            ThompsonControlador.Instance.generarDOT("AFD", afd_result);
 
         }
 

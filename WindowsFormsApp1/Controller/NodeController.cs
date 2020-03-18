@@ -350,5 +350,9 @@ namespace WindowsFormsApp1.Controller
         {
             return regularExpression;
         }
+        public void ClearRegularExpression()
+        {
+            regularExpression.Clear();
+        }
     }
 }
