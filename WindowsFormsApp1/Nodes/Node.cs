@@ -72,18 +72,6 @@ namespace WindowsFormsApp1.Nodes
                 proc.Start();
                 proc.WaitForExit();
 
-
-                ////////
-                ///
-                /// 
-                System.IO.File.WriteAllText(path + "\\" + nombre +"1" + ".dot", getCodeGraphviz2());
-                var command1 = "dot -Tpng \"" + path + "\\" + nombre + "1" + ".dot\"  -o \"" + path + "\\" + nombre + "1" + ".png\"   ";
-                var procStarInfo1 = new ProcessStartInfo("cmd", "/C" + command1);
-                var proc1 = new System.Diagnostics.Process();
-                proc1.StartInfo = procStarInfo1;
-                proc1.Start();
-                proc1.WaitForExit();
-
             }
             catch (Exception)
             {
@@ -102,18 +90,16 @@ namespace WindowsFormsApp1.Nodes
                     getBody() +
                     "}\n";
         }
-        private String getCodeGraphviz2()
-        {
-            return "digraph grafica{\n" +
-                   "rankdir=LR;\n" +
-                   "node [shape = circle, style=filled, fillcolor=white];\n" +
-                    getBody2() +
-                    "}\n";
-        }
         private String getBody()
         {
             String etiqueta;
+
             String str = element.Replace('"', ' ');
+            if (element.Equals("ε"))
+            {
+                str = "epsilon";
+            
+            }
             String anuable = "F";
 
             if (str.Equals("|"))
@@ -147,103 +133,6 @@ namespace WindowsFormsApp1.Nodes
             return etiqueta;
         }
 
-        int indice = 100;
-
-
-        private void updateIndex()
-        {
-            this.index = indice;
-        }
-        private String getBody2()
-        {
-            String etiqueta = "";
-            String str = element.Replace('"', ' ');
-
-
-
-            if (leftChild == null && rightChild == null)
-            {
-                etiqueta = " [ label =\"" + str+ "\"]\n" ;
-            }
-            
-            if (LeftChild != null)
-            {
-                if (Element.Equals("|"))
-                {
-                    etiqueta = etiqueta + index + "->" + rightChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                                  rightChild.index + "->" + (indice +1) + rightChild.getBody2() + "\n" +
-                                  (indice +1)+ "->" + (indice) + "[label=\"" + "ε" + "\"]" + "\n";
-                    this.index = indice;
-                }
-                else if (Element.Equals("."))
-                {
-                    leftChild.updateIndex();
-                    etiqueta = etiqueta + leftChild.indice + "->" + index + leftChild.getBody2() + "\n";
-                }
-                #region otro2
-
-                else if (Element.Equals("*"))
-                {
-                    int indiceTemp = (indice + 1);
-                    int indiceTemp2 = (indiceTemp + 1);
-                    etiqueta = etiqueta + index + "->" + leftChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                               leftChild.index + "->" + indiceTemp + leftChild.getBody2() + "\n" +
-                               (indiceTemp) + "->" + (indiceTemp2) + "[label=\"" + "ε" + "\"]" + "\n" +
-                               (indiceTemp) + "->" + leftChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                               index + "->" + (indiceTemp2) + "[label=\"" + "ε" + "\"]";
-                    //indice = indiceTemp2;
-                }
-                else
-                {
-                    etiqueta = " [ label =\"" + str + "\"]\n";
-                }
-#endregion
-            }
-            if (RightChild != null)
-            {
-
-                if (Element.Equals("|"))
-                {
-
-                    etiqueta = etiqueta + index + "->" + leftChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                          leftChild.index + "->" + (indice + 2) + leftChild.getBody2() + "\n" +
-                          (indice + 2) + "->" + indice + "[label=\"" + "ε" + "\"]" + "\n";
-                    this.index = indice;
-
-
-                }
-                else if (Element.Equals("."))
-                {
-                    etiqueta = etiqueta + index + "->" + rightChild.index + rightChild.getBody2() + "\n";
-                }
-
-
-                #region otro
-                /*else if (Element.Equals("*"))
-                {
-                    int indiceTemp = indice + 1;
-                    int indiceTemp2 = (indiceTemp + 1);
-                    etiqueta = etiqueta + index + "->" + leftChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                               leftChild.index + "->" + indiceTemp + leftChild.getBody2() + "\n" +
-                               (indiceTemp) + "->" + (indiceTemp2) + "[label=\"" + "ε" + "\"]" + "\n" +
-                               (indiceTemp) + "->" + leftChild.index + "[label=\"" + "ε" + "\"]" + "\n" +
-                               index + "->" + (indiceTemp2) + "[label=\"" + "ε" + "\"]";
-                    //indice = indiceTemp2;
-                }*/
-
-                else
-                {
-                    etiqueta = " [ label =\"" + str + "\"]\n";
-                }
-                #endregion
-
-            }
-
-            return etiqueta;
-        }
-
-
-
-
+        
     }
 }

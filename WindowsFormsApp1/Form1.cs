@@ -200,11 +200,14 @@ namespace WindowsFormsApp1
                 RichTextBox rtb = c as RichTextBox;
                 if (rtb.Text != "")
                 {
-
+                    consola.Clear();
+                    SetController.Instance.clearList();
+                    NodeController.getInstancia().clearList();
+                    EvaluatorController.Instance.clearList();
                     TokenController.Instance.clearListaTokens();
                     TokenController.Instance.clearListaTokensError();
                     LexicoController.Instance.Analizer(rtb.Text);
-                    NodeController.getInstancia().ClearRegularExpression();
+
                     /*foreach(Token t in TokenController.Instance.getArrayListTokens())
                     {
                         Console.WriteLine("ID: " + t.Description + " - " + t.Lexema);
@@ -217,47 +220,78 @@ namespace WindowsFormsApp1
                 }
             }
 
+            
+
             //////// PARTE DE LOS CONJUNTOS
-            //SetController.Instance.assemble_Sets();
+            SetController.Instance.assemble_Sets();
             //SetController.Instance.ShowSets();
             /////// Parte de la expresion regular
             RegularExpressionController.Instance.GetElements(Application.StartupPath);
-            RegularExpressionController.Instance.imprimir();
+            //LA CONSTRUCCION DE LOS AUTOMATAS SE PASO A 
+            //RegularExpressionController-> Insertar, al final del metodo;
             
-            //Convierte la expresion regular de prefija a pos
-            NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
-
-
-            ArrayList regularExpresion = NodeController.getInstancia().getRegularExpression();
-            ArrayList regex = new ArrayList();
-
             
-            try
+            //Evaluar la expresion
+            GetString();
+
+
+        }
+
+        //METODO QUE BUSCA LA CADENA A EVALUAR;
+        public void GetString()
+        {
+            String texto = "";
+            String strcadena = "";
+
+            ArrayList l = TokenController.Instance.getArrayListTokens();
+            for (int i = 0; i < l.Count; i++)
             {
-                regex = RegexController.Instance.infixToPostfix(regularExpresion);
+                Token t = (Token)l[i];
+                if (t.Lexema.Equals(":"))
+                {
+
+                    //busca el nombre de la expresion
+                    for (int j = i; j > 0; j--)
+                    {
+                        Token a = (Token)l[j];
+                        if (a.Description.Equals("Identificador"))
+                        {
+                            texto = a.Lexema;
+                            break;
+                        }
+                    }
+                    //itera en la expresion y guarda los elementos
+                    for (int j = i + 1; j < l.Count; j++)
+                    {
+                        Token t2 = (Token)l[j];
+                        if (!t2.Lexema.Equals(";")) //El limite de la expresion es el punto y coma
+                        {
+                            if (t2.Description.Equals("Cadena"))
+                            {
+                                strcadena = t2.Lexema;
+                            }
+                        }
+                        else
+                        {
+                            if (texto != "" && strcadena != "")
+                            {
+                                if (EvaluatorController.Instance.SimulateExpression(texto, strcadena) 
+                                    /*EvaluatorController.Instance.SimulateExpression(texto, strcadena)*/)
+                                {
+                                    consola.AppendText("* La expresion regular " + texto + "-> " + strcadena + " Evaluada correctamente\n");
+                                }
+                                else
+                                {
+                                    String error = EvaluatorController.Instance.GetError();
+                                    consola.AppendText(error);
+                                }
+                            }
+                            i = j;
+                            break;
+                        }
+                    }
+                }
             }
-            catch (Exception a)
-            {
-                Console.WriteLine("Expresión mal ingresada");
-            }
-
-            AFN aFN = new AFN();
-
-            aFN.construirAutomata(regex);
-
-            Automata.Automata afn_result = aFN.Afn;
-            
-            
-            Console.WriteLine(afn_result);
-            //ThompsonControlador.Instance.generarDOT("AFN", afn_result);
-
-            AFD AFD = new AFD();
-            AFD.conversionAFN(afn_result);
-            
-            Automata.Automata afd_result = AFD.Afd;
-            Console.WriteLine(afd_result);
-            ThompsonControlador.Instance.generarDOT("AFD", afd_result);
-
         }
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)

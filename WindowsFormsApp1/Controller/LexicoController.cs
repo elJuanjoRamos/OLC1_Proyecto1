@@ -90,7 +90,7 @@ namespace WindowsFormsApp1.Controller
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_LlaveDerecha");
                                     break;
                                 case '?':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Interrogacion");
                                     break;
                                 case '%':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Porcentaje");

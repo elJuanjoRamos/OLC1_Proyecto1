@@ -49,6 +49,7 @@
     <Compile Include="Automata\AFD.cs" />
     <Compile Include="Automata\AFN.cs" />
     <Compile Include="Automata\Automata.cs" />
+    <Compile Include="Controller\EvaluatorController.cs" />
     <Compile Include="Controller\LexicoController.cs" />
     <Compile Include="Controller\NodeController.cs" />
     <Compile Include="Controller\RegexController.cs" />
@@ -62,10 +63,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Lists\ConcatList.cs" />
     <Compile Include="Model\Estado.cs" />
+    <Compile Include="Model\Evaluator.cs" />
     <Compile Include="Model\Nodo.cs" />
     <Compile Include="Model\RegularExpression.cs" />
+    <Compile Include="Model\RowTable.cs" />
     <Compile Include="Model\Set.cs" />
     <Compile Include="Model\SyntaxTree.cs" />
     <Compile Include="Model\Token.cs" />

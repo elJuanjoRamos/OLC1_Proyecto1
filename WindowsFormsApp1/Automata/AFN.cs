@@ -44,7 +44,8 @@ namespace WindowsFormsApp1.Automata
                     case ".":
                         Automata concat_param1 = (Automata)pilaAFN.Pop();
                         Automata concat_param2 = (Automata)pilaAFN.Pop();
-                        Automata concat_result = concatenacion(concat_param1, concat_param2);
+
+                        Automata concat_result = concatenacion(concat_param2, concat_param1);
 
                         pilaAFN.Push(concat_result);
                         this.Afn = concat_result;
@@ -138,9 +139,57 @@ namespace WindowsFormsApp1.Automata
         public Automata concatenacion(Automata AFN1, Automata AFN2)
         {
 
+            
             Automata afn_concat = new Automata();
 
             //se utiliza como contador para los estados del nuevo automata
+            int i = 0;
+            for (i = 0; i < AFN1.Estados.Count; i++)
+            {
+                Estado tmp = AFN1.Estados[i];
+                tmp.IdEstado = i;
+                //se define el estado inicial
+                if (i == 0)
+                {
+                    afn_concat.Inicio = (tmp);
+                }
+                //cuando llega al último, concatena el ultimo con el primero del otro automata con un epsilon
+                if (i == AFN1.Estados.Count - 1)
+                {
+                    //se utiliza un ciclo porque los estados de aceptacion son un array
+                    for (int k = 0; k < AFN1.Aceptacion.Count; k++)
+                    {
+                        tmp.agregarTransicion(new Transicion(AFN1.Aceptacion[k], AFN2.Inicio, "ε"));
+                    }
+                }
+                afn_concat.AgregarEstado(tmp);
+
+            }
+
+
+            //termina de agregar los estados y transiciones del segundo automata
+            for (int j = 0; j < AFN2.Estados.Count; j++)
+            {
+                Estado tmp = AFN2.Estados[j];
+                tmp.IdEstado = i;
+
+                //define el ultimo con estado de aceptacion
+                if (AFN2.Estados.Count - 1 == j)
+                {
+                    afn_concat.AgregarEstadoAceptacion(tmp);
+                }
+                afn_concat.AgregarEstado(tmp);
+                i++;
+            }
+
+            HashSet<String> alfabeto = new HashSet<String>();
+            alfabeto.UnionWith(AFN1.Alfabeto);
+            alfabeto.UnionWith(AFN2.Alfabeto);
+            afn_concat.Alfabeto = (alfabeto);
+            afn_concat.LenguajeR = (AFN1.LenguajeR + " " + AFN2.LenguajeR);
+
+
+            /*//se utiliza como contador para los estados del nuevo automata
             int i = 0;
             //agregar los estados del primer automata
             for (i = 0; i < AFN2.Estados.Count; i++)
@@ -182,7 +231,7 @@ namespace WindowsFormsApp1.Automata
             alfabeto.UnionWith(AFN2.Alfabeto);
             afn_concat.Alfabeto = (alfabeto);
             afn_concat.LenguajeR = (AFN1.LenguajeR + " " + AFN2.LenguajeR);
-
+            */
             return afn_concat;
         }
 

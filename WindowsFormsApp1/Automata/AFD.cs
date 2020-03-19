@@ -42,8 +42,7 @@ namespace WindowsFormsApp1.Automata
 
             //el algoritmo empieza con el e-Closure del estado inicial del AFN
             HashSet<Estado> array_inicial = simulador.eClosure(afn.Inicio);
-            Console.WriteLine("ESTADO FINAL");
-
+            
             //si el primer e-closure contiene estados de aceptacion hay que agregarlo
             foreach (Estado aceptacion in afn.Aceptacion)
             {
@@ -65,56 +64,31 @@ namespace WindowsFormsApp1.Automata
             {
                 //actual subconjunto
                 HashSet<Estado> actual = cola.Dequeue();
-                Console.WriteLine("SIMBOLO");
                 //se recorre el subconjunto con cada simbolo del alfabeto del AFN
 
                 foreach (Object simbolo in afn.Alfabeto)
                 {
                     //se realiza el move con el subconjunto
-                    Console.WriteLine("el simbolo es " + simbolo);
                     HashSet<Estado> move_result = simulador.move(actual, (String)simbolo);
 
                     HashSet<Estado> resultado = new HashSet<Estado>();
                     //e-Closure con cada estado del resultado del move y 
                     //se guarda en un solo array (merge)
-                    Console.WriteLine("ESTADOS");
-                    Console.WriteLine("__________________");
-
+                
                     foreach (Estado e in move_result)
                     {
-                        Console.WriteLine(e);
                         resultado.UnionWith(simulador.eClosure(e));
                     }
-                    Console.WriteLine("__________________");
                     Estado anterior = automata.Estados[indexEstadoInicio];
                     //Estado anterior = (Estado)automata.getEstados().get(indexEstadoInicio);
                     /*Si el subconjunto ya fue creado una vez, solo se agregan
                     transiciones al automata*/
 
 
-                    
-
-                    if (temporal.Count == 0)
+                    int contador = 0;
+                    int indexOf = 0;
+                    if (temporal.Count > 0)
                     {
-                        temporal.Add(resultado);
-                        cola.Enqueue(resultado);
-
-                        Estado nuevo = new Estado(temporal.IndexOf(resultado) + 1);
-                        anterior.agregarTransicion(new Transicion(anterior, nuevo, simbolo.ToString()));
-                        automata.AgregarEstado(nuevo);
-                        //se verifica si el estado tiene que ser de aceptacion
-                        Console.WriteLine("ESTADO DE ACEPTACION VERIFICAR");
-                        foreach (Estado aceptacion in afn.Aceptacion)
-                        {
-                            if (resultado.Contains(aceptacion))
-                            {
-                                automata.AgregarEstadoAceptacion(nuevo);
-                            }
-
-                        }
-                    } else
-                    {
-                        int contador = 0;
                         for (int i = 0; i < temporal.Count; i++)
                         {
                             string texto = "";
@@ -132,53 +106,50 @@ namespace WindowsFormsApp1.Automata
 
                             if (texto.Equals(texto2))
                             {
+                                indexOf = i;
                                 contador = 1;
                                 break;
                             }
                         }
-                        if (contador == 1)
-                        {
-                            List<Estado> array_viejo = automata.Estados;
-                            Estado estado_viejo = anterior;
-                            //se busca el estado correspondiente y se le suma el offset
-                            Estado estado_siguiente = array_viejo[temporal.IndexOf(resultado) + 1];
-                            estado_viejo.agregarTransicion(new Transicion(estado_viejo, estado_siguiente, simbolo.ToString()));
+                    }
 
-                        }
-                        //si el subconjunto no existe, se crea un nuevo estado
-                        else
-                        {
-                            temporal.Add(resultado);
-                            cola.Enqueue(resultado);
+                    if (contador == 1)
+                    {
+                        List<Estado> array_viejo = automata.Estados;
+                        Estado estado_viejo = anterior;
+                        //se busca el estado correspondiente y se le suma el offset
+                        Estado estado_siguiente = array_viejo[indexOf + 1];
+                        estado_viejo.agregarTransicion(new Transicion(estado_viejo, estado_siguiente, simbolo.ToString()));
 
-                            Estado nuevo = new Estado(temporal.IndexOf(resultado) + 1);
-                            anterior.agregarTransicion(new Transicion(anterior, nuevo, simbolo.ToString()));
-                            automata.AgregarEstado(nuevo);
-                            //se verifica si el estado tiene que ser de aceptacion
-                            Console.WriteLine("ESTADO DE ACEPTACION VERIFICAR");
-                            foreach (Estado aceptacion in afn.Aceptacion)
+                    }
+                    //si el subconjunto no existe, se crea un nuevo estado
+                    else
+                    {
+                        temporal.Add(resultado);
+                        cola.Enqueue(resultado);
+                        Estado nuevo = new Estado(temporal.IndexOf(resultado) + 1);
+                        anterior.agregarTransicion(new Transicion(anterior, nuevo, simbolo.ToString()));
+                        automata.AgregarEstado(nuevo);
+                        //se verifica si el estado tiene que ser de aceptacion
+                        foreach (Estado aceptacion in afn.Aceptacion)
+                        {
+                            if (resultado.Contains(aceptacion))
                             {
-                                if (resultado.Contains(aceptacion))
-                                {
-                                    automata.AgregarEstadoAceptacion(nuevo);
-                                }
-
+                                automata.AgregarEstadoAceptacion(nuevo);
                             }
+
                         }
                     }
 
-                    
-                    
+
                 }
 
                 indexEstadoInicio++;
             }
 
             this.afd = automata;
-            //metodo para definir el alfabeto, se copia el del afn
             definirAlfabeto(afn);
             this.afd.Tipo = ("AFD");
-            //Console.WriteLine(afd);
         }
 
 
@@ -187,6 +158,76 @@ namespace WindowsFormsApp1.Automata
         private void definirAlfabeto(Automata afn)
         {
             this.afd.Alfabeto = afn.Alfabeto;
+        }
+
+
+
+        //QUITAR ESTADOS TRAMPA
+        public Automata RemoveCheatStates(Automata afd)
+        {
+            ArrayList removeState = new ArrayList();
+            /* 1. primero se calcula los estados que son de trampa
+            * Se considera de trampa los estados que tienen transiciones
+            * con todas las letras del alfabeto hacia si mismos
+            */
+            for (int i = 0; i < afd.Estados.Count; i++)
+            {
+
+                int verifyTransitionQuantity = afd.Estados[i].Transiciones.Count;
+
+
+                int transitionCount = 0;
+                foreach (Transicion t in (ArrayList)(afd.Estados[i]).Transiciones)
+                {
+
+                    if (afd.Estados[i] == t.Fin)
+                    {
+                        transitionCount++;
+                    }
+
+                }
+                if (verifyTransitionQuantity == transitionCount && transitionCount != 0)
+                {
+
+                    removeState.Add(afd.Estados[i]);
+                }
+            }
+            /*2. una vez ya sabido que estados son los de trampa
+            * se quitan las transiciones que van hacia ese estado
+            * y al final se elimina el estado del autómata
+            */
+            for (int i = 0; i < removeState.Count; i++)
+            {
+                for (int j = 0; j < afd.Estados.Count; j++)
+                {
+                    ArrayList arraytransition = afd.Estados[j].Transiciones;
+                    int cont = 0;
+                    // System.out.println(arrayT);
+                    while (arraytransition.Count > cont)
+                    {
+                        Transicion t = (Transicion)arraytransition[cont];
+                        //se verifican todas las transiciones que de todos los estados
+                        //que van hacia el estado a eliminar
+                        if (t.Fin == removeState[i])
+                        {
+                            afd.Estados[j].Transiciones.Remove(t);
+                            cont--;
+                        }
+                        cont++;
+
+                    }
+                }
+                //eliminar el estao al final
+                afd.Estados.Remove((Estado)removeState[i]);
+            }
+            //3. arreglar la numeración cuando se quita un estado
+            for (int i = 0; i < afd.Estados.Count; i++)
+            {
+                afd.Estados[i].IdEstado = i;
+            }
+
+
+            return afd;
         }
 
 

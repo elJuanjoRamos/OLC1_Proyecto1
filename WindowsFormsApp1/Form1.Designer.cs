@@ -48,6 +48,8 @@
             this.manualTécnicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.acercaDeProyectoNo1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
+            this.consola = new System.Windows.Forms.RichTextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -114,7 +116,7 @@
             this.ayudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1222, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1716, 28);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -177,14 +179,14 @@
             // reporteDeTokensToolStripMenuItem
             // 
             this.reporteDeTokensToolStripMenuItem.Name = "reporteDeTokensToolStripMenuItem";
-            this.reporteDeTokensToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reporteDeTokensToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             this.reporteDeTokensToolStripMenuItem.Text = "Reporte de Tokens";
             this.reporteDeTokensToolStripMenuItem.Click += new System.EventHandler(this.reporteDeTokensToolStripMenuItem_Click);
             // 
             // reporteDeErrorToolStripMenuItem
             // 
             this.reporteDeErrorToolStripMenuItem.Name = "reporteDeErrorToolStripMenuItem";
-            this.reporteDeErrorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reporteDeErrorToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             this.reporteDeErrorToolStripMenuItem.Text = "Reporte de Error";
             this.reporteDeErrorToolStripMenuItem.Click += new System.EventHandler(this.reporteDeErrorToolStripMenuItem_Click);
             // 
@@ -226,11 +228,30 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // consola
+            // 
+            this.consola.Location = new System.Drawing.Point(19, 679);
+            this.consola.Name = "consola";
+            this.consola.Size = new System.Drawing.Size(543, 132);
+            this.consola.TabIndex = 5;
+            this.consola.Text = "";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 649);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Consola";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1222, 673);
+            this.ClientSize = new System.Drawing.Size(1716, 937);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.consola);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
@@ -268,6 +289,8 @@
         private System.Windows.Forms.ToolStripMenuItem manualTécnicoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acercaDeProyectoNo1ToolStripMenuItem;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox consola;
+        private System.Windows.Forms.Label label1;
     }
 }
 

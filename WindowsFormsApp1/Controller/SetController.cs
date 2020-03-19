@@ -50,6 +50,11 @@ namespace WindowsFormsApp1.Controller
             arrayListSets.Add(s);
         }
 
+
+        public void clearList()
+        {
+            arrayListSets.Clear();
+        }
         public ArrayList GetArray()
         {
             return arrayListSets;
@@ -102,7 +107,7 @@ namespace WindowsFormsApp1.Controller
 
                 for (int i = int.Parse(ant.ToString()); i < int.Parse(sig.ToString()) + 1; i++)
                 {
-                    ar.Add(i);
+                    ar.Add(i.ToString());
                 }
                 return ar;
                 //LETTERS
@@ -114,7 +119,7 @@ namespace WindowsFormsApp1.Controller
 
                 for (int i = initValue; i <= endValue; i++)
                 {
-                    ar.Add((char)i);
+                    ar.Add(((char)i).ToString());
                 }
                 return ar;
                 //ASCII CODES 32 TO 125
@@ -126,20 +131,24 @@ namespace WindowsFormsApp1.Controller
 
                     if (!char.IsDigit(ant) && !char.IsDigit(sig) && !char.IsLetter(ant) && !char.IsLetter(sig))
                     {
-                        ar.Add((char)i);
+                        ar.Add(((char)i).ToString());
                     }
                 }
                 return ar;
             }
             return null;
         }
-
-        public void ShowSets()
+        //Retorna los elementos que tiene un conjunto
+        public ArrayList GetElemntsOfSet(String setName)
         {
             foreach (Set set in arrayListSets)
             {
-                set.toString();
+                if (set.Name.Equals(setName))
+                {
+                    return set.Elements;
+                }
             }
+            return null;
         }
     }
 }

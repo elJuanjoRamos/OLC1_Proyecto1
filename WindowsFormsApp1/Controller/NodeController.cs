@@ -14,6 +14,9 @@ namespace WindowsFormsApp1.Controller
         private ArrayList listAux = new ArrayList();//Lista que contendra los elementos de la expresion regular
         private ArrayList list = new ArrayList();  //Lista que servira para reordenar los elementos de la expresion regular
         private ArrayList elementsList = new ArrayList();  //Lista que contendra los nombres de los elementos
+        private ArrayList followList = new ArrayList();  //Lista que servira para los siguientes
+        private ArrayList newFollowList = new ArrayList();  //Lista que servira para la tabla de transiciones
+
 
 
         private Stack stk = new Stack();
@@ -38,6 +41,18 @@ namespace WindowsFormsApp1.Controller
         public NodeController()
         {
         }
+        //Limpa las listas de elementos
+        public void clearList()
+        {
+
+            raiz = null;
+            cant = 0;
+            this.followList.Clear();
+            //this.elementsList.clear();
+            this.listAux.Clear();
+            this.list.Clear();
+            this.regularExpression.Clear();
+        }
 
         //Iserta los elementos de la expresion regular a una lista;
         public void Insert(String element)
@@ -45,34 +60,26 @@ namespace WindowsFormsApp1.Controller
             listAux.Add(element);
         }
 
-
-        public void clearList()
-        {
-            cant = 0;
-            raiz = null;
-            //this.elementsList.clear();
-            this.listAux.Clear();
-            this.list.Clear();
-        }
-
-        public void GetStringTree()
-        {
-            Node newRoot = (Node)stk.Pop();
-
-
-
-
-
-            stk.Push(newRoot);
-        }
-
-
         public void Print(String name, String path)
         {
             Node left = (Node)stk.Pop();
             raiz = left;
+            
+            //manda la raiz a numerar sus nodos
+            leafNode(raiz);
+            setDesition(raiz);
+            setRootAntNext(raiz);
+
+            //Envia la raiz para obtener los siguientes
+            //elementsOfTable(raiz);
+            
+            
             raiz.print(path, name + "Tree.jpg");
+
             index++;
+
+
+
         }
         public void InsertStack(String s)
         {
@@ -159,18 +166,23 @@ namespace WindowsFormsApp1.Controller
                     cant++;
 
                     //Le ingresa el anuable o no
-                    if (!reco.Element.Equals("epsilon"))
+                    if (!reco.Element.Equals("\"ε\""))
                     {
                         reco.Anulable = false;
+                        reco.First = cant.ToString();
+                        reco.Last = cant.ToString();
                     }
                     else
                     {
                         reco.Anulable = true;
+                        reco.First = "\"Ø\"";
+                        reco.Last = "\"Ø\"";
                     }
                     reco.IsLeaf = true;
                     //le da numeracion
-                    reco.First = cant.ToString();
-                    reco.Last = cant.ToString();
+
+
+                    
                 }
                 leafNode(reco.LeftChild);
                 leafNode(reco.RightChild);
@@ -312,7 +324,89 @@ namespace WindowsFormsApp1.Controller
 
 
 
+        // metodo para obtener los datos con los que se construiran las tablas
+        /*public void elementsOfTable(Node n)
+        {
 
+            if (n != null)
+            {
+
+                if (n.LeftChild != null)
+                {
+                    String[] f = n.LeftChild.Last.Split(',');
+                    for (int i = 0; i < f.Length; i++)
+                    {
+
+                        if (n.Element.Equals("*") || n.Element.Equals("+"))
+                        {
+                            getLeafElement(raiz, f[i]);
+                            getTable(nodeName, f[i], n.LeftChild.First);
+
+                        }
+                        else if (n.Element.Equals("."))
+                        {
+                            getLeafElement(raiz, f[i]);
+                            getTable(nodeName, f[i], n.getRightChild().First);
+                        }
+                    }
+                }
+
+                elementsOfTable(n.LeftChild);
+                elementsOfTable(n.getRightChild());
+            }
+
+        }
+        */
+        // Reestructurar la tabla
+        /*public void getTable(String element, String noleaf, String follow)
+        {
+
+            int contador = 0;
+            if (followList.isEmpty())
+            {
+                followList.add(new RowTable(element, noleaf, follow));
+            }
+            else
+            {
+                for (RowTable o : followList)
+                {
+                    if (o.getNoLeaf().equals(noleaf))
+                    {
+                        contador++;
+                    }
+                }
+                if (contador == 0)
+                {
+                    followList.add(new RowTable(element, noleaf, follow));
+                }
+                else
+                {
+                    for (RowTable o : followList)
+                    {
+                        if (o.getNoLeaf().equals(noleaf))
+                        {
+                            o.setFollow(follow + "," + o.getFollow());
+                        }
+                    }
+                }
+            }
+            //METODO BURBUJA PARA ORDENAR LOS SIGUIENTES DE MENOR A MAYOR
+            int n = followList.size();
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = 0; j < n - i - 1; j++)
+                {
+                    if (Integer.parseInt(((RowTable)followList.get(j)).getNoLeaf()) > Integer.parseInt(((RowTable)followList.get(j + 1)).getNoLeaf()))
+                    {
+                        RowTable swap = followList.get(j);
+                        followList.set(j, followList.get(j + 1));
+                        followList.set(j + 1, swap);
+
+                    }
+                }
+            }
+        }
+        */
         //METODO QUE CONVIERTE LA EXPRESION REGULAR DE PREFIJA A POSTFIJA
         public void ConvertExpression(Node nroot)
         {
@@ -349,10 +443,6 @@ namespace WindowsFormsApp1.Controller
         public ArrayList getRegularExpression()
         {
             return regularExpression;
-        }
-        public void ClearRegularExpression()
-        {
-            regularExpression.Clear();
         }
     }
 }
