@@ -67,6 +67,8 @@ namespace WindowsFormsApp1.Controller
                         bool result;
                         result = Char.TryParse(alphabetChar, out value);
 
+                        
+
                         if (result)
                         {
                             //Si logra converit a char, significa que solo es un simbolo
@@ -74,7 +76,7 @@ namespace WindowsFormsApp1.Controller
                         }
                         else
                         {
-                            //Si no logra convertir, significa que lo que vino fue un dientificador de conjunto
+                            //Si no logra convertir, significa que lo que vino fue un dientificador o un conjuneto
                             //Se busca los elementos del conjunto
                             ArrayList listChar = SetController.Instance.GetElemntsOfSet(alphabetChar);
                             //Verifica que la lista no venga vacia
@@ -88,8 +90,23 @@ namespace WindowsFormsApp1.Controller
                                         new_alphabet.Add(letter.ToString());
                                     }
                                 }
-                            } else
+                            }
+                            else if (listChar ==  null && afd_temp.Alfabeto.Contains(alphabetChar))
                             {
+                                Console.WriteLine("entro");
+                                foreach (var letter in alphabetChar)
+                                {
+                                    //Se agregan los elemenentos al alfabeto
+                                    if (!new_alphabet.Contains(letter.ToString()))
+                                    {
+                                        new_alphabet.Add(letter.ToString());
+                                    }
+                                }
+
+                                //new_alphabet.Add(alphabetChar);
+                            }else 
+                            {
+
                                 error = "El conjunto '" + alphabetChar + "' no ha sido declarado. No se puede evaluar: " + strToEvaluate +".\n";
                                 return false;
                             }

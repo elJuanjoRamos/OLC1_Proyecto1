@@ -225,8 +225,10 @@ namespace WindowsFormsApp1
             //////// PARTE DE LOS CONJUNTOS
             SetController.Instance.assemble_Sets();
             //SetController.Instance.ShowSets();
+            
             /////// Parte de la expresion regular
             RegularExpressionController.Instance.GetElements(Application.StartupPath);
+            
             //LA CONSTRUCCION DE LOS AUTOMATAS SE PASO A 
             //RegularExpressionController-> Insertar, al final del metodo;
             
@@ -240,7 +242,7 @@ namespace WindowsFormsApp1
         //METODO QUE BUSCA LA CADENA A EVALUAR;
         public void GetString()
         {
-            String texto = "";
+            String expressionName = "";
             String strcadena = "";
 
             ArrayList l = TokenController.Instance.getArrayListTokens();
@@ -256,7 +258,7 @@ namespace WindowsFormsApp1
                         Token a = (Token)l[j];
                         if (a.Description.Equals("Identificador"))
                         {
-                            texto = a.Lexema;
+                            expressionName = a.Lexema;
                             break;
                         }
                     }
@@ -273,12 +275,12 @@ namespace WindowsFormsApp1
                         }
                         else
                         {
-                            if (texto != "" && strcadena != "")
+                            if (expressionName != "" && strcadena != "")
                             {
-                                if (EvaluatorController.Instance.SimulateExpression(texto, strcadena) 
+                                if (EvaluatorController.Instance.SimulateExpression(expressionName, strcadena) 
                                     /*EvaluatorController.Instance.SimulateExpression(texto, strcadena)*/)
                                 {
-                                    consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + texto  + " fue Evaluada correctamente\n");
+                                    consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
                                 }
                                 else
                                 {

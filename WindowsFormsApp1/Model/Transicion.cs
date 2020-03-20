@@ -34,7 +34,13 @@ namespace WindowsFormsApp1.Model
 
         public String DOT_String()
         {
-            return (Inicio + " -> " + Fin + " [label=\"" + Simbolo.Replace("\"", "") + "\"];");
+
+            String text = Simbolo;
+            if (Simbolo.Contains("\\"))
+            {
+                text = text.Replace("\\", "\\\\");
+            }
+            return (Inicio + " -> " + Fin + " [label=\"" + text.Replace("\"", "") + "\"];");
         }
     }
 }

@@ -89,6 +89,13 @@ namespace WindowsFormsApp1.Controller
                                 case '}':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_LlaveDerecha");
                                     break;
+                                case '[':
+                                    Console.WriteLine("entro");
+                                    state = 11;
+                                    break;
+                                case ']':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Corchete_Der");
+                                    break;
                                 case '?':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Interrogacion");
                                     break;
@@ -148,41 +155,36 @@ namespace WindowsFormsApp1.Controller
 
                                 /*SIMBOLOS ASCII*/
                                 case '!':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Exclamacion");
                                     break;
                                 case '#':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Numeral");
                                     break;
                                 case '$':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo_Dolar");
                                     break;
                                 case '&':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_&");
                                     break;
                                 case '(':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Izq");
                                     break;
                                 case ')':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Der");
                                     break;
                                 case '=':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Igual");
                                     break;
                                 
                                 case '@':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Arroba");
                                     break;
-                                case '[':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
-                                    break;
-                                case ']':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
-                                    break;
+                             
                                 case '^':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
                                     break;
                                 case '_':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Guion_Bajo");
                                     break;
                                 default:
                                     TokenController.Instance.agregarError(row, column, letra.ToString(), "TD_Desconocido");
@@ -305,29 +307,74 @@ namespace WindowsFormsApp1.Controller
                         }
                         break;
                     case 10:
+                        state = 0;
                         if (letra == 't')
                         {
                             auxiliar += letra;
                             TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Tabulacion");
+                            auxiliar = "";
+                            break;
                         }
                         else if (letra == '"')
                         {
                             auxiliar += letra;
                             TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Doble");
+                            auxiliar = "";
+                            break;
                         }
                         else if (letra == 'n')
                         {
                             auxiliar += letra;
                             TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Salto_Linea");
+                            auxiliar = "";
+                            break;
                         }
                         if (letra.ToString().Equals("'"))
                         {
                             auxiliar += letra;
                             TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Simple");
+                            auxiliar = "";
+                            break;
                         }
-                        state = 0;
-                        auxiliar = "";
+                        else
+                        {
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TD_Desconocido");
+                            auxiliar = "";
+                            break;
+                        }
 
+                    case 11:
+                        if (letra != ':')
+                        {
+                            TokenController.Instance.agregarToken(row, column - 1, "[", "TK_Corchete_Izq");
+                            auxiliar = "";
+                            state = 0;
+                        }
+                        else
+                        {
+                            auxiliar += "\"";
+                            state = 12;
+                        }
+                        break;
+
+                    case 12:
+                        
+
+                        if (letra != ':')
+                        {
+                            if (letra == '\n') { row++; column = 0; }
+                            if (letra == '\t') { column++; }
+                            auxiliar += letra;
+                            state = 12;
+                        }
+                        else
+                        {
+                            auxiliar +=  "\"";
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "Cadena_TODO");
+                            state = 0;
+                            auxiliar = "";
+                            i = i + 1;
+                        }
                         break;
                     default:
                         TokenController.Instance.agregarError(row, column, letra.ToString(), "TD_Desconocido");

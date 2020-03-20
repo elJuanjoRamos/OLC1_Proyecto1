@@ -125,6 +125,11 @@ namespace WindowsFormsApp1.Controller
                                 }
                             }
                         }
+                        else if (listChar == null && simb.Equals(simbolo))
+                        {
+
+                            alcanzados.Add(siguiente);
+                        }
                     }
 
                     
@@ -298,9 +303,8 @@ namespace WindowsFormsApp1.Controller
             System.IO.File.WriteAllText(nombreArchivo + ".dot", texto);
             //Application.StartupPath
             String path = Application.StartupPath;
-            var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + path + "\\" + nombreArchivo  + pngname + ".png\"   ";
+            var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + path+ "\\" + nombreArchivo  + pngname + ".png\"   ";
             //Console.WriteLine(command);
-
             var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
             var proc = new System.Diagnostics.Process();
             proc.StartInfo = procStarInfo;

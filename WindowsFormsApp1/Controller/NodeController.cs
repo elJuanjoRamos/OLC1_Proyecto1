@@ -414,7 +414,7 @@ namespace WindowsFormsApp1.Controller
             {
                 if (nroot.LeftChild == null && nroot.RightChild == null)
                 {
-                    regularExpression.Add(nroot.Element);
+                    regularExpression.Add(nroot.Element.ToString());
                 } else
                 {
                     if (nroot.Element.Equals("*"))

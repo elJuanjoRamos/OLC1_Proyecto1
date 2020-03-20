@@ -150,5 +150,18 @@ namespace WindowsFormsApp1.Controller
             }
             return null;
         }
+
+
+        public void ShowSets()
+        {
+            foreach (Set item in arrayListSets)
+            {
+                Console.WriteLine(item.Name);
+                foreach (String e in item.Elements)
+                {
+                    Console.WriteLine("-"+e);
+                }
+            }
+        }
     }
 }
