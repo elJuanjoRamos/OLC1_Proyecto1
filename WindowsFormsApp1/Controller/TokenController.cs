@@ -62,7 +62,7 @@ namespace WindowsFormsApp1.Controller
             arrayListErrors.Clear();
         }
 
-        public void reportToken()
+        public void reportToken(String path)
         {
             XDocument d = new XDocument(new XDeclaration("1.0", "utf-8", null));
             XElement root = new XElement("ListaToken");
@@ -84,11 +84,11 @@ namespace WindowsFormsApp1.Controller
                 c.Add(t.Column);
                 root.Add(element);
             }
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            d.Save(@"C:\OLC1\Token.xml");
+            //string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            d.Save(path+"\\Token.xml");
         }
 
-        public void reportError()
+        public void reportError(String path)
         {
             XDocument d = new XDocument(new XDeclaration("1.0", "utf-8", null));
             XElement root = new XElement("ListaErrores");
@@ -110,8 +110,7 @@ namespace WindowsFormsApp1.Controller
                 c.Add(t.Column);
                 root.Add(element);
             }
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            d.Save(@"C:\OLC1\Error.xml");
+            d.Save(path + "\\Error.xml");
         }
 
     }

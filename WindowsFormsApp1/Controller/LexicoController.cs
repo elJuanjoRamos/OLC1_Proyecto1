@@ -98,6 +98,10 @@ namespace WindowsFormsApp1.Controller
                                 case '*':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Multiplicacion");
                                     break;
+                                case '\\':
+                                    state = 10;
+                                    auxiliar += letra;
+                                    break;
                                 case '/':
                                     state = 3;
                                     auxiliar += letra;
@@ -262,25 +266,18 @@ namespace WindowsFormsApp1.Controller
                             if (letra == '\n') { row++; column = 0; }
                             auxiliar += letra;
                             state = 6;
-                            /*System.err.println("ESTADO 5");
-                            System.err.println(auxiliar);*/
                         }
                         else
                         {
                             auxiliar += letra;
                             state = 7;
-                            /*System.err.println("ESTADO 7");
-                            System.err.println(auxiliar);*/
                         }
                         break;
                     case 7:
                         if (letra == '>')
                         {
                             auxiliar += letra;
-                            //                        System.err.println("ESTADO 7");
-                            //                        System.err.println(auxiliar);
                             TokenController.Instance.agregarToken(row, column, auxiliar, "ComentarioMultilinea");
-                            //row++; column = 0;
                             state = 0;
                             auxiliar = "";
                         }
@@ -306,6 +303,31 @@ namespace WindowsFormsApp1.Controller
                             state = 0;
                             auxiliar = "";
                         }
+                        break;
+                    case 10:
+                        if (letra == 't')
+                        {
+                            auxiliar += letra;
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Tabulacion");
+                        }
+                        else if (letra == '"')
+                        {
+                            auxiliar += letra;
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Doble");
+                        }
+                        else if (letra == 'n')
+                        {
+                            auxiliar += letra;
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Salto_Linea");
+                        }
+                        if (letra.ToString().Equals("'"))
+                        {
+                            auxiliar += letra;
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Simple");
+                        }
+                        state = 0;
+                        auxiliar = "";
+
                         break;
                     default:
                         TokenController.Instance.agregarError(row, column, letra.ToString(), "TD_Desconocido");

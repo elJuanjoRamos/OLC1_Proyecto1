@@ -278,7 +278,7 @@ namespace WindowsFormsApp1
                                 if (EvaluatorController.Instance.SimulateExpression(texto, strcadena) 
                                     /*EvaluatorController.Instance.SimulateExpression(texto, strcadena)*/)
                                 {
-                                    consola.AppendText("* La expresion regular " + texto + "-> " + strcadena + " Evaluada correctamente\n");
+                                    consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + texto  + " fue Evaluada correctamente\n");
                                 }
                                 else
                                 {
@@ -296,20 +296,13 @@ namespace WindowsFormsApp1
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TokenController.Instance.reportToken();
-            foreach(Token t in TokenController.Instance.getArrayListTokens())
-            {
-                //Console.WriteLine(t.Lexema);
-            }
+            TokenController.Instance.reportToken(Application.StartupPath);
+            
         }
 
         private void reporteDeErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TokenController.Instance.reportError();
-            foreach (Token t in TokenController.Instance.getArrayListErrors())
-            {
-                //Console.WriteLine(t.Lexema);
-            }
+            TokenController.Instance.reportError(Application.StartupPath);
         }
     }
 }

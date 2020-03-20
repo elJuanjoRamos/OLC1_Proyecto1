@@ -123,11 +123,11 @@ namespace WindowsFormsApp1.Controller
                     {
                         //Se envia a evaluar la expresion
                         validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp);
-                        error = "X La cadena " + strToEvaluate + " contiene errores.";
+                        error = "X La cadena " + strToEvaluate + " contiene errores.\n";
                     }
                     else
                     {
-                        error = "X Error en " + strToEvaluate + ". El caracter " + ch + ", no se encuentra dentro del alfabeto";
+                        error = "X Error en " + strToEvaluate + ". El caracter " + ch + ", no se encuentra dentro del alfabeto\n";
                         return false;
                     }
 
