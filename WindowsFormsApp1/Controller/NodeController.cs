@@ -64,17 +64,22 @@ namespace WindowsFormsApp1.Controller
         {
             Node left = (Node)stk.Pop();
             raiz = left;
-            
+            Node temp = raiz;
             //manda la raiz a numerar sus nodos
-            leafNode(raiz);
-            setDesition(raiz);
-            setRootAntNext(raiz);
+
+            Node right = new Node("#");
+
+            Node dot = new Node(".", right, temp, false);
+
+            leafNode(dot);
+            setDesition(dot);
+            setRootAntNext(dot);
 
             //Envia la raiz para obtener los siguientes
-            //elementsOfTable(raiz);
+            //elementsOfTable(dot);
             
             
-            raiz.print(path, name + "Tree.jpg");
+            dot.print(path, name + "Tree.jpg");
 
             index++;
 
