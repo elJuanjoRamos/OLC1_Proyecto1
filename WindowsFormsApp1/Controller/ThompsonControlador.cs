@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -210,7 +211,7 @@ namespace WindowsFormsApp1.Controller
             return alcanzados[0];
         }*/
 
-        public Boolean EvaluateExpression(String regex, Automata.Automata automata)
+        public Boolean EvaluateExpression(String regex, Automata.Automata automata, ArrayList ar, bool isString)
         {
             Console.WriteLine(automata);
             Estado inicial = automata.Inicio;
@@ -218,28 +219,64 @@ namespace WindowsFormsApp1.Controller
             List<Estado> aceptacion = new List<Estado>(automata.Aceptacion);
 
             HashSet<Estado> conjunto = eClosure(inicial);
-            foreach (Char ch in regex)
-            {
-                //Move in sets es un metodo para moverme entre conjuntos
-                conjunto = moveInSet(conjunto, ch.ToString());
-                HashSet<Estado> temp = new HashSet<Estado>();
-                IEnumerator<Estado> iter = conjunto.GetEnumerator();
 
-                //Estado aux = iter.Current;
-                while (iter.MoveNext())
+            if (isString)
+            {
+
+                foreach (String ch in ar)
                 {
-                    Estado siguiente = iter.Current;
-                    //aux = iter.MoveNext();
-                    /**
-                     * En esta parte es muy importante el metodo addAll
-                     * porque se tiene que agregar el eClosure de todo el conjunto
-                     * resultante del move y se utiliza un hashSet temporal porque
-                     * no se permite la mutacion mientras se itera
-                     */
-                    temp.UnionWith(eClosure(siguiente));
+                    //Move in sets es un metodo para moverme entre conjuntos
+
+                    conjunto = moveInSet(conjunto, ch);
+                    HashSet<Estado> temp = new HashSet<Estado>();
+                    IEnumerator<Estado> iter = conjunto.GetEnumerator();
+
+                    //Estado aux = iter.Current;
+                    while (iter.MoveNext())
+                    {
+                        Estado siguiente = iter.Current;
+                        //aux = iter.MoveNext();
+                        /**
+                         * En esta parte es muy importante el metodo addAll
+                         * porque se tiene que agregar el eClosure de todo el conjunto
+                         * resultante del move y se utiliza un hashSet temporal porque
+                         * no se permite la mutacion mientras se itera
+                         */
+                        temp.UnionWith(eClosure(siguiente));
+
+                    }
+                    conjunto = temp;
 
                 }
-                conjunto = temp;
+
+
+            }
+            else
+            {
+                foreach (Char ch in regex)
+                {
+                    //Move in sets es un metodo para moverme entre conjuntos
+
+                    conjunto = moveInSet(conjunto, ch.ToString());
+                    HashSet<Estado> temp = new HashSet<Estado>();
+                    IEnumerator<Estado> iter = conjunto.GetEnumerator();
+
+                    //Estado aux = iter.Current;
+                    while (iter.MoveNext())
+                    {
+                        Estado siguiente = iter.Current;
+                        //aux = iter.MoveNext();
+                        /**
+                         * En esta parte es muy importante el metodo addAll
+                         * porque se tiene que agregar el eClosure de todo el conjunto
+                         * resultante del move y se utiliza un hashSet temporal porque
+                         * no se permite la mutacion mientras se itera
+                         */
+                        temp.UnionWith(eClosure(siguiente));
+
+                    }
+                    conjunto = temp;
+                }
 
             }
 
@@ -255,17 +292,16 @@ namespace WindowsFormsApp1.Controller
             }
             if (response)
             {
-                //System.out.println("Aceptado");
-                //this.resultado = "Aceptado";
                 return true;
             }
             else
             {
-                //System.out.println("NO Aceptado");
-                // this.resultado = "No Aceptado";
                 return false;
             }
         }
+
+
+
 
         public void generarDOT(String nombreArchivo, String pngname, Automata.Automata automataFinito)
         {
@@ -300,16 +336,36 @@ namespace WindowsFormsApp1.Controller
             texto += "}";
 
 
+ 
             System.IO.File.WriteAllText(nombreArchivo + ".dot", texto);
             //Application.StartupPath
             String path = Application.StartupPath;
-            var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + path+ "\\" + nombreArchivo  + pngname + ".png\"   ";
-            //Console.WriteLine(command);
-            var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
-            var proc = new System.Diagnostics.Process();
-            proc.StartInfo = procStarInfo;
-            proc.Start();
-            proc.WaitForExit();
+            
+
+            
+            try
+            {
+                
+                // Determine whether the directory exists.
+                if (!Directory.Exists(path + "\\" + nombreArchivo))
+                {
+                    // Try to create the directory.
+                    DirectoryInfo di = Directory.CreateDirectory(path + "\\" + nombreArchivo);
+                }
+
+                String pngPath = path + "\\" + nombreArchivo;
+
+                var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + pngPath + "\\" + nombreArchivo + " " + pngname + ".png\"   ";
+                //Console.WriteLine(command);
+                var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
+                var proc = new System.Diagnostics.Process();
+                proc.StartInfo = procStarInfo;
+                proc.Start();
+                proc.WaitForExit();
+            }
+            catch (Exception e)
+            {
+            }
 
         }
     
@@ -321,8 +377,20 @@ namespace WindowsFormsApp1.Controller
 
             try
             {
+
+                // Determine whether the directory exists.
+                if (!Directory.Exists(path + "\\" + "Transitions Table"))
+                {
+                    // Try to create the directory.
+                    DirectoryInfo di = Directory.CreateDirectory(path + "\\" + "Transitions Table");
+                }
+
+                String pngPath = path + "\\" + "Transitions Table";
+
+
+
                 System.IO.File.WriteAllText(path + "\\" + "TableTransition.dot", GetCodeGraphviz(afd, fileName));
-                var command = "dot -Tpng \"" + path + "\\" + "TableTransition.dot\"  -o \"" + path + "\\" + fileName + "TableTransition.png\"   ";
+                var command = "dot -Tpng \"" + path + "\\" + "TableTransition.dot\"  -o \"" + pngPath + "\\" + fileName + "Table.png\"   ";
                 var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
                 var proc = new System.Diagnostics.Process();
                 proc.StartInfo = procStarInfo;
@@ -339,7 +407,6 @@ namespace WindowsFormsApp1.Controller
 
         }
         public String GetCodeGraphviz(Automata.Automata afd, String nombre) {
-            String[,] tabla = new String[20, 20];
             ArrayList states = new ArrayList();
 
 
@@ -356,16 +423,27 @@ namespace WindowsFormsApp1.Controller
                     RowTable rowTable = new RowTable();
 
                     Transicion t = (Transicion)ar[j];
-                    rowTable.Start = t.Inicio.IdEstado;
-                    rowTable.End = t.Fin.IdEstado;
-                    rowTable.Symbol = t.Simbolo.Replace('"', ' ');
-                    states.Add(rowTable);
-                    texto = texto + "{" + t.Inicio.IdEstado + "|" + t.Fin.IdEstado + "|" + t.Simbolo.Replace('"', ' ') + "}|\n";
+
+                    String start = t.Inicio.IdEstado.ToString();
+                    String end = t.Fin.IdEstado.ToString();
+                    foreach (var item in temp.Aceptacion)
+                    {
+                        if (item.IdEstado== t.Inicio.IdEstado)
+                        {
+                            start = start + "*";
+                        }
+                        if (item.IdEstado == t.Fin.IdEstado)
+                        {
+                            end = end + "*";
+                        }
+                    }
+                    
+                    texto = texto + "{" + start + "|" + end + "|" + t.Simbolo.Replace('"', ' ') + "}|\n";
 
                 }
             }
 
-            texto = texto + "{<here> " + "---" + "|---}|";
+            texto = texto + "{ *  | Estado Aceptacion }\n";
 
             return "digraph grafica{\n" +
               "rankdir=TB;\n" +

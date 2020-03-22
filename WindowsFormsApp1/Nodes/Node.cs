@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -64,8 +65,20 @@ namespace WindowsFormsApp1.Nodes
         {
             try
             {
-                System.IO.File.WriteAllText(path + "\\" + nombre + ".dot", getCodeGraphviz());
-                var command = "dot -Tpng \"" + path + "\\" + nombre + ".dot\"  -o \"" + path + "\\" + nombre + ".png\"   ";
+
+                // Determine whether the directory exists.
+                if (!Directory.Exists(path + "\\" + "Arboles"))
+                {
+                    // Try to create the directory.
+                    DirectoryInfo di = Directory.CreateDirectory(path + "\\" + "Arboles");
+                }
+
+                String pngPath = path + "\\" + "Arboles";
+
+
+
+                System.IO.File.WriteAllText(path + "\\" +  "Tree.dot", getCodeGraphviz());
+                var command = "dot -Tpng \"" + path + "\\Tree.dot\"  -o \"" + pngPath + "\\" + nombre + ".png\"   ";
                 var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
                 var proc = new System.Diagnostics.Process();
                 proc.StartInfo = procStarInfo;

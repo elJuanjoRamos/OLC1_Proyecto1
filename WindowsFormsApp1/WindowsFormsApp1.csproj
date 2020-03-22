@@ -72,7 +72,6 @@
     <Compile Include="Model\SyntaxTree.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="Model\Transicion.cs" />
-    <Compile Include="Nodes\Concat.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

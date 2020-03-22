@@ -160,13 +160,13 @@ namespace WindowsFormsApp1.Controller
                 st = st + item;
             }
 
-            Console.WriteLine(st);
+            Console.WriteLine(name+"->"+st);
 
             //CONSTRUYE EL AUTOMATA ANF
             AFN aFN = new AFN();
             aFN.construirAutomata(regex);
             Automata.Automata afn_result = aFN.Afn;
-            ThompsonControlador.Instance.generarDOT("AFN ", name, afn_result);
+            ThompsonControlador.Instance.generarDOT("AFN", name, afn_result);
 
             //CONSTRUYE EL AUTOMATA AFD
             AFD AFD = new AFD();
@@ -175,7 +175,7 @@ namespace WindowsFormsApp1.Controller
 
             //CONSTRUYE EL AUTOMATA SIN ESTADO STRAMPA
             Automata.Automata afd_trampa = AFD.RemoveCheatStates(afd_result);
-            ThompsonControlador.Instance.generarDOT("AFD ", name, afd_trampa);
+            ThompsonControlador.Instance.generarDOT("AFD", name, afd_trampa);
 
             //CONSTRUYE LA TABLA
             ThompsonControlador.Instance.TableConstructor(name, path, afd_trampa);

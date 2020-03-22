@@ -277,11 +277,14 @@ namespace WindowsFormsApp1
                         {
                             if (expressionName != "" && strcadena != "")
                             {
-                                if (EvaluatorController.Instance.SimulateExpression(expressionName, strcadena) 
-                                    /*EvaluatorController.Instance.SimulateExpression(texto, strcadena)*/)
+                                if (EvaluatorController.Instance.SimulateExpression(expressionName, strcadena) )
                                 {
                                     consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
                                 }
+                                /*else if (EvaluatorController.Instance.SimulateExpressionWhitString(expressionName, strcadena))
+                                {
+                                    consola.AppendText("* La Cadena " + strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
+                                }*/
                                 else
                                 {
                                     String error = EvaluatorController.Instance.GetError();
