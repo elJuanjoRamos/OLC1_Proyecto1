@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsFormsApp1.Automata;
 using WindowsFormsApp1.Model;
-using WindowsFormsApp1.Nodes;
 namespace WindowsFormsApp1.Controller
 {
     class RegularExpressionController
@@ -71,7 +70,7 @@ namespace WindowsFormsApp1.Controller
                                         temp.Add(a.Trim());
                                         j = j + 1;
                                     }
-                                    else if (t2.Description.Equals("TK_Interrogacion"))
+                                    /*else if (t2.Lexema.Equals("?"))
                                     {
                                         temp.Add("|");
                                         String a = ((Token)l[j + 1]).Lexema;
@@ -79,7 +78,7 @@ namespace WindowsFormsApp1.Controller
                                         temp.Add(a.Trim());
                                         temp.Add("\"ε\"");
                                         j = j + 1;
-                                    }
+                                    }*/
                                     else
                                     {
                                         string a = t2.Lexema.Replace('"', ' ');
@@ -113,22 +112,33 @@ namespace WindowsFormsApp1.Controller
             ArrayList vuelta = new ArrayList(); // array que va a almacenar los elementos en orden inverso
             for (int i = ar.Count-1; i >= 0; i--)
             {
-                if (ar[i].Equals("?"))//ε
+
+                vuelta.Add(ar[i]);
+                NodeController.getInstancia().InsertStack(ar[i].ToString());
+
+                /*if (ar[i].Equals("?"))//ε
                 {
-                    vuelta.Add("\"ε\"");
+                    vuelta.Remove(ar[i + 1]);
                     vuelta.Add("|");
-                    NodeController.getInstancia().InsertStack("|");
-                    NodeController.getInstancia().InsertStack(ar[i+1].ToString());
+                    vuelta.Add(ar[i+1]);
+                    vuelta.Add("ε");
                     NodeController.getInstancia().InsertStack("ε");
-                    //Console.WriteLine("\"ε\"");
-                } else
-                {
-                   vuelta.Add(ar[i]);
-                   NodeController.getInstancia().InsertStack(ar[i].ToString());
-                   
+                    NodeController.getInstancia().InsertStack(ar[i+1].ToString());
+                    NodeController.getInstancia().InsertStack("|");
                 }
+                else
+                {
+                   
+                }*/
+
             }
-            
+            String ast = "";
+            foreach (var item in vuelta)
+            {
+                ast = ast + " " + item;
+            }
+
+            Console.WriteLine(ast);
 
             RegularExpression re = new RegularExpression(name, vuelta);
             arrayListER.Add(re);

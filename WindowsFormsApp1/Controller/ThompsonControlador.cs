@@ -420,8 +420,7 @@ namespace WindowsFormsApp1.Controller
                 ArrayList ar = (ArrayList)temp.Estados[i].Transiciones;
                 for (int j = 0; j < ar.Count; j++)
                 {
-                    RowTable rowTable = new RowTable();
-
+                    
                     Transicion t = (Transicion)ar[j];
 
                     String start = t.Inicio.IdEstado.ToString();

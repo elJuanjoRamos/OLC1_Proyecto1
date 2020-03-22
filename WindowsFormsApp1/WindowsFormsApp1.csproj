@@ -65,14 +65,11 @@
     </Compile>
     <Compile Include="Model\Estado.cs" />
     <Compile Include="Model\Evaluator.cs" />
-    <Compile Include="Model\Nodo.cs" />
     <Compile Include="Model\RegularExpression.cs" />
-    <Compile Include="Model\RowTable.cs" />
     <Compile Include="Model\Set.cs" />
-    <Compile Include="Model\SyntaxTree.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="Model\Transicion.cs" />
-    <Compile Include="Nodes\Node.cs" />
+    <Compile Include="Model\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -99,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Nodes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

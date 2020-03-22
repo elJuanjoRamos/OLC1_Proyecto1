@@ -178,8 +178,37 @@ namespace WindowsFormsApp1.Controller
                             ArrayList nuevaCadena = new ArrayList();
 
                             //Se itera sobre el alfabeto
-                            foreach (String str in new_alphabet)
-                            {
+                            /* foreach (String str in new_alphabet)
+                             {
+                                 cadenaTemp = "";
+                                 //Se itera sobre la cadena de entrada
+                                 for (int i = 0; i < str_temp.Length; i++)
+                                 {
+                                     //Se concatena caracteres a la variable
+                                     cadenaTemp = cadenaTemp + str_temp[i];
+
+                                     //Se evalua si la cadena de entrada es igual al elemento del alfabeto
+                                     if (str.Equals(cadenaTemp))
+                                     {
+                                         //si cumple, se agrega la cadena al nuevo alafabeto
+                                         nuevaCadena.Add(cadenaTemp.Trim());
+                                         //La cadena a evaluar se cambia desde donde se encontro coincidencias hasta adelante
+                                         //por ejemplo 'cadena de entrada'
+                                         //el elemento del alfabeto es 'cadena'
+                                         //como coincide
+                                         //str_temp = 'de entrada'
+
+
+                                         str_temp = str_temp.Substring(i +1).Trim();
+                                         cadenaTemp = "";
+                                         //break;
+                                     }
+                                 }
+
+                             }*/
+
+
+                           
                                 cadenaTemp = "";
                                 //Se itera sobre la cadena de entrada
                                 for (int i = 0; i < str_temp.Length; i++)
@@ -187,10 +216,8 @@ namespace WindowsFormsApp1.Controller
                                     //Se concatena caracteres a la variable
                                     cadenaTemp = cadenaTemp + str_temp[i];
 
-                                    //Se evalua si la cadena de entrada es igual al elemento del alfabeto
-                                    if (str.Equals(cadenaTemp))
+                                    if (new_alphabet.Contains(cadenaTemp))
                                     {
-                                        //si cumple, se agrega la cadena al nuevo alafabeto
                                         nuevaCadena.Add(cadenaTemp.Trim());
                                         //La cadena a evaluar se cambia desde donde se encontro coincidencias hasta adelante
                                         //por ejemplo 'cadena de entrada'
@@ -199,14 +226,13 @@ namespace WindowsFormsApp1.Controller
                                         //str_temp = 'de entrada'
 
 
-                                        str_temp = str_temp.Substring(i +1).Trim();
-                                        break;
-                                    }
+                                        str_temp = str_temp.Substring(i + 1).Trim();
+                                        cadenaTemp = "";
+                                    }                                   
                                 }
 
-                            }
 
-                            
+
                             validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, nuevaCadena, true);
                             error = "X La cadena " + strToEvaluate + " contiene errores.\n";
 

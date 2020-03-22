@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsFormsApp1.Nodes;
+using WindowsFormsApp1.Model;
 
 namespace WindowsFormsApp1.Controller
 {
@@ -435,6 +435,14 @@ namespace WindowsFormsApp1.Controller
                         ConvertExpression(nroot.LeftChild);
                         regularExpression.Add("|");
                         ConvertExpression(nroot.RightChild);
+                    }
+                    else if (nroot.Element.Equals("?"))
+                    {
+                        regularExpression.Add("(");
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression.Add("|");
+                        regularExpression.Add("ε");
+                        regularExpression.Add(")");
                     }
                     else if (nroot.Element.Equals("."))
                     {
