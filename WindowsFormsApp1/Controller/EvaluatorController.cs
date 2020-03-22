@@ -45,7 +45,7 @@ namespace WindowsFormsApp1.Controller
         public bool SimulateExpression(string expressionName, string strToEvaluate)
         {
             //Se crea un array que tendra el alfabeto modificado
-            HashSet<String> new_alphabet = new HashSet<String>();
+            ArrayList new_alphabet = new ArrayList();
             bool validate = true;
             //Itera en los automatas guardados
             foreach (Evaluator item in arrayAutomatas)
@@ -169,79 +169,56 @@ namespace WindowsFormsApp1.Controller
                         //Cuando vienen cadenas;
                         case 1:
 
-                            
-                            //Dado que como son cadenas, debe venir exactamente como fue declarado en la expresion regular
 
-                            string cadenaTemp = "";
-
-                            //Se declara un nuevo arreglo que contrendra las cadenas a evaluar
+                            String[] new_a = str_temp.Split(' ');
+                            ArrayList nuevaCadenaTemp = new ArrayList();
                             ArrayList nuevaCadena = new ArrayList();
 
-                            //Se itera sobre el alfabeto
-                            /* foreach (String str in new_alphabet)
-                             {
-                                 cadenaTemp = "";
-                                 //Se itera sobre la cadena de entrada
-                                 for (int i = 0; i < str_temp.Length; i++)
-                                 {
-                                     //Se concatena caracteres a la variable
-                                     cadenaTemp = cadenaTemp + str_temp[i];
+                            //VERIFICA QUE TODAS LAS CADENAS ESTA DENTRO DEL ALFABETO
+                            for (int i = 0; i < new_a.Length; i++)
+                            {
+                                //elemento en la cadena de entrada
+                                String elementInString = new_a[i];
 
-                                     //Se evalua si la cadena de entrada es igual al elemento del alfabeto
-                                     if (str.Equals(cadenaTemp))
-                                     {
-                                         //si cumple, se agrega la cadena al nuevo alafabeto
-                                         nuevaCadena.Add(cadenaTemp.Trim());
-                                         //La cadena a evaluar se cambia desde donde se encontro coincidencias hasta adelante
-                                         //por ejemplo 'cadena de entrada'
-                                         //el elemento del alfabeto es 'cadena'
-                                         //como coincide
-                                         //str_temp = 'de entrada'
+                                int cont = 0;
+                                int index = 0;
 
 
-                                         str_temp = str_temp.Substring(i +1).Trim();
-                                         cadenaTemp = "";
-                                         //break;
-                                     }
-                                 }
 
-                             }*/
-
-
-                           
-                                cadenaTemp = "";
-                                //Se itera sobre la cadena de entrada
-                                for (int i = 0; i < str_temp.Length; i++)
+                                for (int j = 0; j < new_alphabet.Count; j++)
                                 {
-                                    //Se concatena caracteres a la variable
-                                    cadenaTemp = cadenaTemp + str_temp[i];
-
-                                    if (new_alphabet.Contains(cadenaTemp))
+                                    String evaluator = (String)new_alphabet[j];
+                                    if (evaluator.Contains(elementInString))
                                     {
-                                        nuevaCadena.Add(cadenaTemp.Trim());
-                                        //La cadena a evaluar se cambia desde donde se encontro coincidencias hasta adelante
-                                        //por ejemplo 'cadena de entrada'
-                                        //el elemento del alfabeto es 'cadena'
-                                        //como coincide
-                                        //str_temp = 'de entrada'
 
-
-                                        str_temp = str_temp.Substring(i + 1).Trim();
-                                        cadenaTemp = "";
-                                    }                                   
+                                        index = j;
+                                        cont = 1;
+                                        break;
+                                    }
+                                }
+                                //Significa que encontro el elemento
+                                if (cont == 1)
+                                {
+                                    String e = (String)new_alphabet[index];
+                                    if (!nuevaCadena.Contains(e))
+                                    {
+                                        nuevaCadena.Add(e);
+                                    }
+                                }
+                                else
+                                {
+                                    error = "X Error en " + strToEvaluate + ". La cadena " + i + ", no se encuentra dentro del alfabeto\n";
+                                    return false;
                                 }
 
 
-
+                            }
                             validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, nuevaCadena, true);
-                            error = "X La cadena " + strToEvaluate + " contiene errores.\n";
-
                             if (!validate)
                             {
+                                error = "X La cadena " + strToEvaluate + " contiene errores.\n";
                                 return false;
                             }
-
-
 
                             break;
                         default:

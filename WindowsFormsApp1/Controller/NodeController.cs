@@ -329,92 +329,10 @@ namespace WindowsFormsApp1.Controller
 
 
 
-        // metodo para obtener los datos con los que se construiran las tablas
-        /*public void elementsOfTable(Node n)
-        {
-
-            if (n != null)
-            {
-
-                if (n.LeftChild != null)
-                {
-                    String[] f = n.LeftChild.Last.Split(',');
-                    for (int i = 0; i < f.Length; i++)
-                    {
-
-                        if (n.Element.Equals("*") || n.Element.Equals("+"))
-                        {
-                            getLeafElement(raiz, f[i]);
-                            getTable(nodeName, f[i], n.LeftChild.First);
-
-                        }
-                        else if (n.Element.Equals("."))
-                        {
-                            getLeafElement(raiz, f[i]);
-                            getTable(nodeName, f[i], n.getRightChild().First);
-                        }
-                    }
-                }
-
-                elementsOfTable(n.LeftChild);
-                elementsOfTable(n.getRightChild());
-            }
-
-        }
-        */
-        // Reestructurar la tabla
-        /*public void getTable(String element, String noleaf, String follow)
-        {
-
-            int contador = 0;
-            if (followList.isEmpty())
-            {
-                followList.add(new RowTable(element, noleaf, follow));
-            }
-            else
-            {
-                for (RowTable o : followList)
-                {
-                    if (o.getNoLeaf().equals(noleaf))
-                    {
-                        contador++;
-                    }
-                }
-                if (contador == 0)
-                {
-                    followList.add(new RowTable(element, noleaf, follow));
-                }
-                else
-                {
-                    for (RowTable o : followList)
-                    {
-                        if (o.getNoLeaf().equals(noleaf))
-                        {
-                            o.setFollow(follow + "," + o.getFollow());
-                        }
-                    }
-                }
-            }
-            //METODO BURBUJA PARA ORDENAR LOS SIGUIENTES DE MENOR A MAYOR
-            int n = followList.size();
-            for (int i = 0; i < n - 1; i++)
-            {
-                for (int j = 0; j < n - i - 1; j++)
-                {
-                    if (Integer.parseInt(((RowTable)followList.get(j)).getNoLeaf()) > Integer.parseInt(((RowTable)followList.get(j + 1)).getNoLeaf()))
-                    {
-                        RowTable swap = followList.get(j);
-                        followList.set(j, followList.get(j + 1));
-                        followList.set(j + 1, swap);
-
-                    }
-                }
-            }
-        }
-        */
         //METODO QUE CONVIERTE LA EXPRESION REGULAR DE PREFIJA A POSTFIJA
         public void ConvertExpression(Node nroot)
         {
+
             if (nroot !=null)
             {
                 if (nroot.LeftChild == null && nroot.RightChild == null)

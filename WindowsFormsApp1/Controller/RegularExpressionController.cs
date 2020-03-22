@@ -116,21 +116,6 @@ namespace WindowsFormsApp1.Controller
                 vuelta.Add(ar[i]);
                 NodeController.getInstancia().InsertStack(ar[i].ToString());
 
-                /*if (ar[i].Equals("?"))//ε
-                {
-                    vuelta.Remove(ar[i + 1]);
-                    vuelta.Add("|");
-                    vuelta.Add(ar[i+1]);
-                    vuelta.Add("ε");
-                    NodeController.getInstancia().InsertStack("ε");
-                    NodeController.getInstancia().InsertStack(ar[i+1].ToString());
-                    NodeController.getInstancia().InsertStack("|");
-                }
-                else
-                {
-                   
-                }*/
-
             }
             String ast = "";
             foreach (var item in vuelta)
@@ -142,7 +127,6 @@ namespace WindowsFormsApp1.Controller
 
             RegularExpression re = new RegularExpression(name, vuelta);
             arrayListER.Add(re);
-            //NodeController.getInstancia().Print(name, path);
             NodeController.getInstancia().Print(name, path);
 
 
