@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
     {
         public string charInicial = "";
         string appPath = Application.StartupPath;
-
+        string fileName = "";
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +47,7 @@ namespace WindowsFormsApp1
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 filePath = ofd.FileName;
+                fileName = System.IO.Path.GetFileName(ofd.FileName);
                 tabControl1.SelectedTab.Text = filePath;
             }
 
@@ -277,9 +278,12 @@ namespace WindowsFormsApp1
                         {
                             if (expressionName != "" && strcadena != "")
                             {
+                                
                                 if (EvaluatorController.Instance.SimulateExpression(expressionName, strcadena) )
                                 {
+
                                     consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
+                                    EvaluatorController.Instance.reportToken(appPath, expressionName + "-" + strcadena.Replace('"', ' ').Trim());
                                 }
                                 /*else if (EvaluatorController.Instance.SimulateExpressionWhitString(expressionName, strcadena))
                                 {
@@ -289,7 +293,9 @@ namespace WindowsFormsApp1
                                 {
                                     String error = EvaluatorController.Instance.GetError();
                                     consola.AppendText(error);
+                                    EvaluatorController.Instance.reportError(appPath, expressionName + "-" + strcadena.Replace('"', ' ').Trim());
                                 }
+
                             }
                             i = j;
                             break;
@@ -301,13 +307,13 @@ namespace WindowsFormsApp1
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TokenController.Instance.reportToken(Application.StartupPath);
+            TokenController.Instance.PrintTokens(fileName);
             
         }
 
         private void reporteDeErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TokenController.Instance.reportError(Application.StartupPath);
+            TokenController.Instance.PrintErrores(fileName);    
         }
     }
 }

@@ -47,53 +47,55 @@ namespace WindowsFormsApp1.Controller
                         }
                     }
 
-                    Token t1 = (Token)l[i + 1]; // token de inicio de la expresion
+                    Token t1 = (Token)l[i + 2]; // token de inicio de la expresion
 
-                    if (t1 != null && t1.Lexema.Equals("."))
+                    if (t1 != null && !t1.Lexema.Equals("~") && !t1.Lexema.Equals(","))
                     {
-                        //itera en la expresion y guarda los elementos
-                        for (int j = i + 1; j < l.Count; j++)
-                        {
-                            Token t2 = (Token)l[j];
-                            if (!t2.Lexema.Equals(";")) //El limite de la expresion es el punto y coma
+                        
+                            //itera en la expresion y guarda los elementos
+                            for (int j = i + 1; j < l.Count; j++)
                             {
-                                if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
+                                Token t2 = (Token)l[j];
+                                if (!t2.Lexema.Equals(";")) //El limite de la expresion es el punto y coma
                                 {
-                                    if (t2.Description.Equals("TK_Suma")) //Hace reemplazo de +a -> . a* a 
+                                    if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
                                     {
-                                        String a = ((Token)l[j + 1]).Lexema;
-                                        a = a.Replace('"', ' ');
-                                        temp.Add(".");
+                                        if (t2.Description.Equals("TK_Suma")) //Hace reemplazo de +a -> . a* a 
+                                        {
+                                            String a = ((Token)l[j + 1]).Lexema;
+                                            a = a.Replace('"', ' ');
+                                            temp.Add(".");
 
-                                        temp.Add(a.Trim());
-                                        temp.Add("*");
-                                        temp.Add(a.Trim());
-                                        j = j + 1;
-                                    }
-                                    /*else if (t2.Lexema.Equals("?"))
-                                    {
-                                        temp.Add("|");
-                                        String a = ((Token)l[j + 1]).Lexema;
-                                        a = a.Replace('"', ' ');
-                                        temp.Add(a.Trim());
-                                        temp.Add("\"ε\"");
-                                        j = j + 1;
-                                    }*/
-                                    else
-                                    {
-                                        string a = t2.Lexema.Replace('"', ' ');
-                                        temp.Add(a.Trim());
-                                    }
+                                            temp.Add(a.Trim());
+                                            temp.Add("*");
+                                            temp.Add(a.Trim());
+                                            j = j + 1;
+                                        }
+                                        /*else if (t2.Lexema.Equals("?"))
+                                        {
+                                            temp.Add("|");
+                                            String a = ((Token)l[j + 1]).Lexema;
+                                            a = a.Replace('"', ' ');
+                                            temp.Add(a.Trim());
+                                            temp.Add("\"ε\"");
+                                            j = j + 1;
+                                        }*/
+                                        else
+                                        {
+                                            string a = t2.Lexema.Replace('"', ' ');
+                                            temp.Add(a.Trim());
+                                        }
 
+                                    }
+                                }
+                                else
+                                {
+                                    Insert(texto, temp, path);
+                                    i = j;
+                                    break;
                                 }
                             }
-                            else
-                            {
-                                Insert(texto, temp, path);
-                                i = j;
-                                break;
-                            }
-                        }
+                        
                     }
                 }
             }
@@ -132,9 +134,7 @@ namespace WindowsFormsApp1.Controller
 
 
             //Convierte la expresion regular de prefija a pos
-            NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
-
-            ArrayList regularExpresion = NodeController.getInstancia().getRegularExpression();
+            ArrayList regularExpresion =  NodeController.getInstancia().ConvertExpression(NodeController.getInstancia().getRoot());
             ArrayList regex = new ArrayList();
             
 

@@ -15,7 +15,7 @@ namespace WindowsFormsApp1.Controller
     {
         private readonly static ThompsonControlador instance = new ThompsonControlador();
         private String resultado;
-
+        ArrayList arrayErrores = new ArrayList();
         public ThompsonControlador()
         {
         }
@@ -159,57 +159,7 @@ namespace WindowsFormsApp1.Controller
             return alcanzados[0];
         }
 
-        /*public HashSet<Estado> move(HashSet<Estado> estados, String simbolo)
-        {
-            HashSet<Estado> alcanzados = new HashSet<Estado>();
-            //IEnumerator<Estado> iterador = estados.GetEnumerator();
-
-            foreach (Estado iterador in estados)
-            {
-                foreach (Transicion t in (List<Transicion>)iterador.Transiciones)
-                {
-                    Estado siguiente = t.Fin;
-                    String simb = (String)t.Simbolo;
-                    if (simb.Equals(simbolo))
-                    {
-                        alcanzados.Add(siguiente);
-                    }
-                }
-            }
-            /*while (iterador.MoveNext())
-            {
-
-                foreach(Transicion t in (List<Transicion>)iterador.Current.Transiciones)
-                {
-                    Estado siguiente = t.Fin;
-                    String simb = (String)t.Simbolo;
-                    if (simb.Equals(simbolo))
-                    {
-                        alcanzados.Add(siguiente);
-                    }
-                }
-            }*/
-        /*    return alcanzados;
-        }
-
-       /* public Estado moves(Estado estado, String simbolo)
-        {
-            List<Estado> alcanzados = new List<Estado>();
-
-            foreach (Transicion t in (List<Transicion>)estado.Transiciones)
-            {
-                Estado siguiente = t.Fin;
-                String simb = (String)t.Simbolo;
-
-                if (simb.Equals(simbolo) && !alcanzados.Contains(siguiente))
-                {
-                    alcanzados.Add(siguiente);
-                }
-
-            }
-
-            return alcanzados[0];
-        }*/
+      
 
         public Boolean EvaluateExpression(String regex, Automata.Automata automata, ArrayList ar, bool isString)
         {
@@ -228,6 +178,7 @@ namespace WindowsFormsApp1.Controller
                     //Move in sets es un metodo para moverme entre conjuntos
 
                     conjunto = moveInSet(conjunto, ch);
+                    
                     HashSet<Estado> temp = new HashSet<Estado>();
                     IEnumerator<Estado> iter = conjunto.GetEnumerator();
 
@@ -253,11 +204,15 @@ namespace WindowsFormsApp1.Controller
             }
             else
             {
-                foreach (Char ch in regex)
+                for (int i = 0; i < regex.Length; i++)
                 {
                     //Move in sets es un metodo para moverme entre conjuntos
-
+                    Char ch = regex[i];
                     conjunto = moveInSet(conjunto, ch.ToString());
+                    if (conjunto.Count == 0)
+                    {
+                        EvaluatorController.Instance.getError(ch.ToString(), i);
+                    }
                     HashSet<Estado> temp = new HashSet<Estado>();
                     IEnumerator<Estado> iter = conjunto.GetEnumerator();
 
@@ -276,6 +231,7 @@ namespace WindowsFormsApp1.Controller
 
                     }
                     conjunto = temp;
+
                 }
 
             }

@@ -64,6 +64,8 @@ namespace WindowsFormsApp1.Controller
         {
             Node left = (Node)stk.Pop();
             raiz = left;
+            
+            
             Node temp = raiz;
             //manda la raiz a numerar sus nodos
 
@@ -330,7 +332,7 @@ namespace WindowsFormsApp1.Controller
 
 
         //METODO QUE CONVIERTE LA EXPRESION REGULAR DE PREFIJA A POSTFIJA
-        public void ConvertExpression(Node nroot)
+        public ArrayList ConvertExpression(Node nroot)
         {
 
             if (nroot !=null)
@@ -369,11 +371,8 @@ namespace WindowsFormsApp1.Controller
                     }
                 }
             }
-        }
-        
-        public ArrayList getRegularExpression()
-        {
             return regularExpression;
         }
+        
     }
 }

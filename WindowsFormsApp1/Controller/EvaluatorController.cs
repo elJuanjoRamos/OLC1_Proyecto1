@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WindowsFormsApp1.Model;
 
 namespace WindowsFormsApp1.Controller
@@ -12,6 +14,9 @@ namespace WindowsFormsApp1.Controller
     {
         private readonly static EvaluatorController instance = new EvaluatorController();
         ArrayList arrayAutomatas = new ArrayList();
+        ArrayList arrayTokensEvaluados = new ArrayList();
+        ArrayList arrayErroresEvaluados = new ArrayList();
+
         String error = "";
         private EvaluatorController()
         {
@@ -30,7 +35,6 @@ namespace WindowsFormsApp1.Controller
         {
             Evaluator e = new Evaluator(name, afd);
             arrayAutomatas.Add(e);
-
         }
 
 
@@ -44,9 +48,10 @@ namespace WindowsFormsApp1.Controller
             //Evaluacion de caracteres, verifica que todos los caracretes coincidan
         public bool SimulateExpression(string expressionName, string strToEvaluate)
         {
+            clearTokens();
             //Se crea un array que tendra el alfabeto modificado
             ArrayList new_alphabet = new ArrayList();
-            bool validate = true;
+            bool validate = false;
             //Itera en los automatas guardados
             foreach (Evaluator item in arrayAutomatas)
             {
@@ -54,7 +59,6 @@ namespace WindowsFormsApp1.Controller
                 if (item.ExpressionName.Equals(expressionName))
                 {
                     Automata.Automata afd_temp = item.Afd;
-
                     //Varibale para definir que tipo de alfabeto tiene el automata
                     //es decir: si tiene solo simbolos, conjuntos, cadenas, o mezcla entre ellas
                     int swcase = 0;
@@ -72,9 +76,10 @@ namespace WindowsFormsApp1.Controller
                         result = Char.TryParse(alphabetChar, out value);
 
 
-                        if (result)
+                        if (result || alphabetChar.Equals("\n") || alphabetChar.Equals("\t") || alphabetChar.Equals("\r")
+                            || alphabetChar.Equals("\"") || alphabetChar.Equals("\'"))
                         {
-                            //Si logra converit a char, significa que solo es un simbolo
+                            //Si logra converit a char o si es un caracter especial, significa que solo es un simbolo
                             //y lo agrega al nuevo alfabeto
                             new_alphabet.Add(alphabetChar);
                         }
@@ -91,10 +96,12 @@ namespace WindowsFormsApp1.Controller
                                 //se itera sobre los elementos del conjuntos
                                 foreach (var letter in listChar)
                                 {
+                                    String letter_temp = letter.ToString().Replace('"', ' ');
+                                    letter_temp = letter_temp.Trim();
                                     //Se agregan los elemenentos al alfabeto
-                                    if (!new_alphabet.Contains(letter.ToString()))
+                                    if (!new_alphabet.Contains(letter_temp))
                                     {
-                                        new_alphabet.Add(letter.ToString());
+                                        new_alphabet.Add(letter_temp.ToString());
                                     }
                                 }
 
@@ -143,10 +150,14 @@ namespace WindowsFormsApp1.Controller
                                 //Verifica que todos los elementos esten dentro del alfabeto
                                 ch = str_temp[i];
 
+                                
                                 if (!new_alphabet.Contains(ch.ToString()))
                                 {
                                     countAux = 0;
-                                    break;
+                                    //Si algun elemento no se encuentra del alfabeto lo guarda en un array de errores
+                                    Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
+                                    arrayErroresEvaluados.Add(t);
+                                    //break;
                                 }
                             }
                             //Si contador sigue en uno es por que el alfabeto contiene todos los caracteres del 
@@ -154,8 +165,25 @@ namespace WindowsFormsApp1.Controller
                             if (countAux == 1)
                             {
                                 //Se envia a evaluar la expresion
+
                                 validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, null, false);
-                                error = "X La cadena " + strToEvaluate + " contiene errores.\n";
+
+
+                                //si la validacion fue exitosa significa que la cadena fue valida
+                                if (validate)
+                                {
+                                    //Se agregan los tokens evaluados a la lista que se va a imprimir
+                                    for (int i = 0; i < str_temp.Length; i++)
+                                    {
+                                        Token t = new Token(0, str_temp[i].ToString(), "Carcter_"+ str_temp[i].ToString(), i, 0);
+                                        arrayTokensEvaluados.Add(t);
+                                    }
+
+                                }
+                                else
+                                {
+                                    error = "X La cadena " + strToEvaluate + " contiene errores.\n";
+                                }
                             }
                             else
                             {
@@ -233,117 +261,11 @@ namespace WindowsFormsApp1.Controller
         }
 
 
-
-        //Simula la expresion con cadenas en lugar de caracteres, es decir, en el alfabeto del automata exiten
-        //cadenas como "hola", "adios" en lugar de solo elementos tipo "a", "b", "c"
-        public bool SimulateExpressionWhitString(string expressionName, string strToEvaluate)
+        public void getError(String token, int col)
         {
-
-            
-            
-            //Se crea un array que tendra el alfabeto modificado
-            HashSet<String> new_alphabet = new HashSet<String>();
-            bool validate = true;
-
-
-
-            //Itera en los automatas guardados
-            foreach (Evaluator item in arrayAutomatas)
-            {
-                //Busca el automata cuyo nombre coincida con el recivido por el metodo
-                if (item.ExpressionName.Equals(expressionName))
-                {
-                    Automata.Automata afd_temp = item.Afd;
-
-
-                    //Recreando el nuevo alfabeto
-
-
-                    foreach (var element in afd_temp.Alfabeto)
-                    {
-
-                        Char value;
-                        bool result;
-                        result = Char.TryParse(element, out value);
-
-
-
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    /*//Se itera sobre la cadena de entrada
-
-                    //Quita las comillas y los espacios;
-                    String str_temp = strToEvaluate.Replace('"', ' ');
-                    ArrayList elements_to_Evaluate = LexicoController.Instance.AnalizerStringToEvaluate(str_temp);
-
-                    //Variable 'booleana' sirve para determinar si continuar evaluando o no;
-                    int countAux = 0;
-                    String strNotValid = "";
-
-                    foreach (var alfabeto in afd_temp.Alfabeto)
-                    {
-                        foreach (String element in elements_to_Evaluate)
-                        {
-                            if (alfabeto.Contains(element))
-                            {
-                                countAux++;
-                                Console.WriteLine("entro");
-                            }
-                        }
-                    }
-                    //Si countAux es igual que el tama;o el arreglo significa que todos los elementos estan en el alfabeto
-                    if (countAux == elements_to_Evaluate.Count)
-                    {
-                        validate = ThompsonControlador.Instance.EvaluateString(elements_to_Evaluate, afd_temp);
-                        error = "X La cadena " + strToEvaluate + " contiene errores.\n";
-
-                    }
-                    else
-                    {
-                        error = "X Error en " + strToEvaluate + ". Uno o mas elementos no se encuentran dentro del alfabeto\n";
-                        return false;
-                    }*/
-
-
-                    break;
-                }
-
-            }
-            return validate;
+            Token t = new Token(0, token, "Carcter_" + token, col, 0);
+            arrayErroresEvaluados.Add(t);
         }
-
-
-
-
 
         public String GetError()
         {
@@ -352,7 +274,84 @@ namespace WindowsFormsApp1.Controller
         public void clearList()
         {
             arrayAutomatas.Clear();
+            arrayTokensEvaluados.Clear();
+            arrayErroresEvaluados.Clear();
+        }
+        public void clearTokens()
+        {
+            arrayTokensEvaluados.Clear();
+            arrayErroresEvaluados.Clear();
         }
 
+
+        public void reportToken(String path, String nombre)
+        {
+            XDocument d = new XDocument(new XDeclaration("1.0", "utf-8", null));
+            XElement root = new XElement("ListaToken");
+            d.Add(root);
+            foreach (Token t in arrayTokensEvaluados)
+            {
+                XElement element = new XElement("Token");
+                XElement n = new XElement("Nombre");
+                XElement v = new XElement("Valor");
+                XElement f = new XElement("Fila");
+                XElement c = new XElement("Columna");
+                element.Add(n);
+                n.Add(t.Description);
+                element.Add(v);
+                v.Add(t.Lexema);
+                element.Add(f);
+                f.Add(t.Row);
+                element.Add(c);
+                c.Add(t.Column);
+                root.Add(element);
+            }
+
+            // Determine whether the directory exists.
+            if (!Directory.Exists(path + "\\Reports\\Tokens"))
+            {
+                // Try to create the directory.
+                DirectoryInfo di = Directory.CreateDirectory(path + "\\Reports\\Tokens");
+            }
+
+            String tokenPath = path + "\\Reports\\Tokens\\XMLTokens " + nombre + ".xml";
+
+            d.Save(tokenPath);
+        }
+
+        public void reportError(String path, String nombre)
+        {
+            XDocument d = new XDocument(new XDeclaration("1.0", "utf-8", null));
+            XElement root = new XElement("ListaErrores");
+            d.Add(root);
+            foreach (Token t in arrayErroresEvaluados)
+            {
+                XElement element = new XElement("Error");
+                XElement n = new XElement("Nombre");
+                XElement v = new XElement("Valor");
+                XElement f = new XElement("Fila");
+                XElement c = new XElement("Columna");
+                element.Add(n);
+                n.Add(t.Description);
+                element.Add(v);
+                v.Add(t.Lexema);
+                element.Add(f);
+                f.Add(t.Row);
+                element.Add(c);
+                c.Add(t.Column);
+                root.Add(element);
+            }
+
+            // Determine whether the directory exists.
+            if (!Directory.Exists(path + "\\Reports\\Errors"))
+            {
+                // Try to create the directory.
+                DirectoryInfo di = Directory.CreateDirectory(path + "\\Reports\\Errors");
+            }
+
+            String errorPath = path + "\\Reports\\Errors\\XmlError " + nombre +".xml";
+
+            d.Save(errorPath);
+        }
     }
 }
