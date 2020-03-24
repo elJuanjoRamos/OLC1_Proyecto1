@@ -362,52 +362,109 @@ namespace WindowsFormsApp1.Controller
 
 
         }
+
         public String GetCodeGraphviz(Automata.Automata afd, String nombre) {
-            ArrayList states = new ArrayList();
-
-
             Automata.Automata temp = afd;
-
             String texto = "";
 
-            for (int i = 0; i < temp.Estados.Count; i++)
-            {
-                
-                ArrayList ar = (ArrayList)temp.Estados[i].Transiciones;
-                for (int j = 0; j < ar.Count; j++)
-                {
-                    
-                    Transicion t = (Transicion)ar[j];
+            List<String> lista = new List<String>();
+            List<int> estados = new List<int>();
 
-                    String start = t.Inicio.IdEstado.ToString();
-                    String end = t.Fin.IdEstado.ToString();
-                    foreach (var item in temp.Aceptacion)
+
+
+
+
+            foreach (var item in temp.Estados)
+            {
+
+                foreach (Transicion o in item.Transiciones)
+                {
+                    //Token t = new Token(0, o.Simbolo, o.Simbolo, 0,0);
+                    if (!lista.Contains(o.Simbolo))
                     {
-                        if (item.IdEstado== t.Inicio.IdEstado)
+                        lista.Add(o.Simbolo);
+
+                    }
+
+                    int start = o.Inicio.IdEstado;
+                    int end = o.Fin.IdEstado;
+
+                    if (!estados.Contains(start))
+                    {
+                        estados.Add(start);
+                    }
+                    if (!estados.Contains(end))
+                    {
+                        estados.Add(end);
+                    }
+                }
+            }
+
+
+
+            string[,] matriz = new string[estados.Count() + 1, lista.Count() + 1];
+            for (int i = 0; i < lista.Count(); i++)
+            {
+                matriz[0, i + 1] = lista[i];
+            }
+            estados.Sort();
+            for (int i = 0; i < estados.Count(); i++)
+            {
+                matriz[i + 1, 0] = estados[i].ToString();
+            }
+            int indexState = 0;
+            int indexTerminal = 0;
+
+
+            foreach (var item in afd.Estados)
+            {
+                foreach (Transicion transicion in item.Transiciones)
+                {
+                    int a = transicion.Inicio.IdEstado;
+                    string b = transicion.Simbolo;
+                    indexState = estados.FindIndex(e => e == a);
+                    indexTerminal = lista.FindIndex(e => e == b);
+
+                    String end = transicion.Fin.IdEstado.ToString();
+                    /**/
+
+                    foreach (var i in temp.Aceptacion)
+                    {
+                        
+                        if (i.IdEstado == transicion.Fin.IdEstado)
                         {
-                            start = start + "*";
-                        }
-                        if (item.IdEstado == t.Fin.IdEstado)
-                        {
-                            end = end + "*";
+                            end = end + "#";
                         }
                     }
-                    
-                    texto = texto + "{" + start + "|" + end + "|" + t.Simbolo.Replace('"', ' ') + "}|\n";
+
+                     matriz[indexState + 1, indexTerminal +1] = end;
 
                 }
             }
 
-            texto = texto + "{ *  | Estado Aceptacion }\n";
 
-            return "digraph grafica{\n" +
-              "rankdir=TB;\n" +
-              "node [shape = record, style=filled, fillcolor=white];\n"
-               +
-               "nodo1"  + "[label=\""
-               + "\n{ Transition Table " + nombre + "|{E Inicio | E Final | Simb}|" + texto + 
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                texto = texto + "\n<TR>\n";
+                for (int j = 0; j < matriz.GetLength(1); j++)
+                {
+                    if (matriz[i, j] == null)
+                    {
+                        texto = texto + "\t<TD width=\"50\">-</TD>\n";  
+                    } else
+                    {
+                        texto = texto + "\t<TD width=\"50\">" + matriz[i, j].Replace('"', ' ') + "</TD>\n";
+                    }
+                }
+                texto = texto + "</TR>\n";
+            }
 
-                "}\"];\n}";
+        
+        
+            return "digraph G {\n" +
+              "\n\tgraph [rankdir=LR, label=\"Transition Table " + nombre +"\", labelloc=t, fontsize=30, pad=0.5, nodesep=0.5, ranksep=2];\n"
+               + "\n\tnode[shape=none];\n"+
+               "\n\ttable[label =<\n  <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\"> " + texto+ "\n</TABLE>>];\n}";
         }
 
 
