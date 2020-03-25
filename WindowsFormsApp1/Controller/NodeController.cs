@@ -342,19 +342,31 @@ namespace WindowsFormsApp1.Controller
                     regularExpression.Add(nroot.Element.ToString());
                 } else
                 {
+                    if (nroot.Element.Equals("+"))
+                    {
+                        regularExpression.Add("(");
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression.Add("(");
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression.Add(")");
+                        regularExpression.Add("*");
+                        regularExpression.Add(")");
+                    }
                     if (nroot.Element.Equals("*"))
                     {
                         regularExpression.Add("(");
                         ConvertExpression(nroot.LeftChild);
                         regularExpression.Add(")");
                         regularExpression.Add("*");
-
                     }
                     else if (nroot.Element.Equals("|"))
                     {
+                        regularExpression.Add("(");
                         ConvertExpression(nroot.LeftChild);
                         regularExpression.Add("|");
                         ConvertExpression(nroot.RightChild);
+                        regularExpression.Add(")");
+
                     }
                     else if (nroot.Element.Equals("?"))
                     {

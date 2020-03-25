@@ -450,10 +450,10 @@ namespace WindowsFormsApp1.Controller
                 {
                     if (matriz[i, j] == null)
                     {
-                        texto = texto + "\t<TD width=\"50\">-</TD>\n";  
+                        texto = texto + "\t<TD width=\"75\">-</TD>\n";  
                     } else
                     {
-                        texto = texto + "\t<TD width=\"50\">" + matriz[i, j].Replace('"', ' ') + "</TD>\n";
+                        texto = texto + "\t<TD width=\"75\">" + matriz[i, j].Replace('"', ' ') + "</TD>\n";
                     }
                 }
                 texto = texto + "</TR>\n";

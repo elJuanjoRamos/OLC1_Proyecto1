@@ -243,8 +243,11 @@ namespace WindowsFormsApp1
         //METODO QUE BUSCA LA CADENA A EVALUAR;
         public void GetString()
         {
+            int contador = 0;
             String expressionName = "";
             String strcadena = "";
+            string cadena = "";
+            string contenido = "";
 
             ArrayList l = TokenController.Instance.getArrayListTokens();
             for (int i = 0; i < l.Count; i++)
@@ -283,7 +286,11 @@ namespace WindowsFormsApp1
                                 {
 
                                     consola.AppendText("* La Cadena "+ strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
-                                    EvaluatorController.Instance.reportToken(appPath, expressionName + "-" + strcadena.Replace('"', ' ').Trim());
+                                    contenido = "<tr>\n" +
+                                       "     <td>" + "* La Cadena " + strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n" + "</td>\n" +
+                                       "</tr>";
+                                    cadena = cadena + contenido;
+                                    EvaluatorController.Instance.reportToken(appPath, expressionName + "-" + contador);
                                 }
                                 /*else if (EvaluatorController.Instance.SimulateExpressionWhitString(expressionName, strcadena))
                                 {
@@ -293,7 +300,11 @@ namespace WindowsFormsApp1
                                 {
                                     String error = EvaluatorController.Instance.GetError();
                                     consola.AppendText(error);
-                                    EvaluatorController.Instance.reportError(appPath, expressionName + "-" + strcadena.Replace('"', ' ').Trim());
+                                    contenido = "<tr>\n" +
+                                       "     <td>" + error + "</td>\n" +
+                                       "</tr>";
+                                    cadena = cadena + contenido;
+                                    EvaluatorController.Instance.reportError(appPath, expressionName + "-" + contador);
                                 }
 
                             }
@@ -302,18 +313,96 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
+                contador++;
+
             }
+
+            string cadena2 = "<th scope =\"col\">Evaluación</th>\n";
+            assembleHTML(cadena, cadena2, "Consola " + fileName);
         }
 
         private void reporteDeTokensToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TokenController.Instance.PrintTokens(fileName);
-            
         }
 
         private void reporteDeErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TokenController.Instance.PrintErrores(fileName);    
+        }
+
+        public void assembleHTML(string cadena, string cadena2, string titulo)
+        {
+
+            string head = "<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "    <meta charset='utf-8'>\n" +
+            "    <meta http-equiv='X-UA-Compatible' content='IE=edge'>\n" +
+            "    <title> Repote " + titulo + "</title>\n" +
+            "    <meta name='viewport' content='width=device-width, initial-scale=1'>\n" +
+            "    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>\n" +
+            "    <script src='main.js'></script>\n" +
+            "    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\">\n" +
+            "    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">\n" +
+            "</head>" +
+            "<body>\n" +
+            "  <nav class=\"navbar navbar-light bg-light\">\n" +
+            "    <span class=\"navbar-brand mb-0 h1\">Lenguajes formales</span>\n" +
+            "  </nav>";
+
+            string body1 = "<div class=\"container\">\n" +
+          "    <div class=\"jumbotron jumbotron-fluid\">\n" +
+          "      <div class=\"container\">\n" +
+          "        <h1 class=\"display-4\">Consola</h1>\n" +
+          "        <p class=\"lead\">Resultado arrojado de consola.</p>\n" +
+          "      </div>\n" +
+          "    </div>\n" +
+          "    <div class=\"row\">\n" +
+          "    <table id=\"data\"  cellspacing=\"0\" style=\"width: 100 %\" class=\"table table-striped table-bordered table-sm\">\n" +
+          "      <thead class=\"thead-dark\">\n" +
+          "        <tr>\n" +
+                    cadena2 +
+          "        </tr>\n" +
+          "      </thead>" +
+          "<tbody>";
+
+
+            string body2 = "</tbody>\n" +
+           "    </table>\n" +
+           "</div>\n" +
+           "  </div>";
+
+            string script =
+                "  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" ></script>\n" +
+                "  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>\n" +
+                "  <script src=\"https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js\"></script>\n" +
+                "  <script src=\"https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js\" ></script>\n" +
+                "<script>" +
+                "$(document).ready(function () { " +
+                 "$('#data').DataTable(" +
+
+                 "{ \"aLengthMenu\" " + ":" + " [[5, 10, 25, -1], [5, 10, 25, \"All\"]], \"iDisplayLength\" : 5" +
+                 "}" +
+                 ");" +
+                 "}" +
+                 "); " +
+               "</script>";
+
+            string html;
+
+            html = head + body1 + cadena + body2 +
+            script +
+            "</body>" +
+            "</html>";
+
+            var Renderer = new IronPdf.HtmlToPdf();
+            Renderer.RenderHtmlAsPdf(html).SaveAs("Reporte " + titulo + ".pdf");
+
+            /*creando archivo html*/
+            File.WriteAllText("Reporte " + titulo + ".html", html);
+            System.Diagnostics.Process.Start("Reporte " + titulo + ".html");
+            System.Diagnostics.Process.Start("Reporte " + titulo + ".pdf");
         }
     }
 }

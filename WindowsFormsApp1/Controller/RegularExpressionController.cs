@@ -60,32 +60,8 @@ namespace WindowsFormsApp1.Controller
                                 {
                                     if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
                                     {
-                                        if (t2.Description.Equals("TK_Suma")) //Hace reemplazo de +a -> . a* a 
-                                        {
-                                            String a = ((Token)l[j + 1]).Lexema;
-                                            a = a.Replace('"', ' ');
-                                            temp.Add(".");
-
-                                            temp.Add(a.Trim());
-                                            temp.Add("*");
-                                            temp.Add(a.Trim());
-                                            j = j + 1;
-                                        }
-                                        /*else if (t2.Lexema.Equals("?"))
-                                        {
-                                            temp.Add("|");
-                                            String a = ((Token)l[j + 1]).Lexema;
-                                            a = a.Replace('"', ' ');
-                                            temp.Add(a.Trim());
-                                            temp.Add("\"ε\"");
-                                            j = j + 1;
-                                        }*/
-                                        else
-                                        {
-                                            string a = t2.Lexema.Replace('"', ' ');
-                                            temp.Add(a.Trim());
-                                        }
-
+                                        string a = t2.Lexema;
+                                        temp.Add(a.Trim());
                                     }
                                 }
                                 else

@@ -129,7 +129,7 @@
             this.guardarComoToolStripMenuItem,
             this.salirToolStripMenuItem});
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
-            this.archivoToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.archivoToolStripMenuItem.Size = new System.Drawing.Size(73, 26);
             this.archivoToolStripMenuItem.Text = "Archivo";
             // 
             // nuevaPestañaToolStripMenuItem
@@ -173,7 +173,7 @@
             this.reporteDeTokensToolStripMenuItem,
             this.reporteDeErrorToolStripMenuItem});
             this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
-            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 24);
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 26);
             this.reportesToolStripMenuItem.Text = "Reportes";
             // 
             // reporteDeTokensToolStripMenuItem
@@ -197,7 +197,7 @@
             this.manualTécnicoToolStripMenuItem,
             this.acercaDeProyectoNo1ToolStripMenuItem});
             this.ayudaToolStripMenuItem.Name = "ayudaToolStripMenuItem";
-            this.ayudaToolStripMenuItem.Size = new System.Drawing.Size(65, 24);
+            this.ayudaToolStripMenuItem.Size = new System.Drawing.Size(65, 26);
             this.ayudaToolStripMenuItem.Text = "Ayuda";
             // 
             // manualDeAplicaciónToolStripMenuItem
@@ -230,6 +230,7 @@
             // 
             // consola
             // 
+            this.consola.ForeColor = System.Drawing.Color.DarkGoldenrod;
             this.consola.Location = new System.Drawing.Point(19, 679);
             this.consola.Name = "consola";
             this.consola.Size = new System.Drawing.Size(543, 132);

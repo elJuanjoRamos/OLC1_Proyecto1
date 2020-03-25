@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using WindowsFormsApp1.Model;
+using IronPdf;
 
 namespace WindowsFormsApp1.Controller
 {
@@ -199,11 +200,13 @@ namespace WindowsFormsApp1.Controller
             "</body>" +
             "</html>";
 
+            var Renderer = new IronPdf.HtmlToPdf();
+            Renderer.RenderHtmlAsPdf(html).SaveAs("Reporte " + titulo + ".pdf");
 
             /*creando archivo html*/
             File.WriteAllText("Reporte " + titulo + ".html", html);
             System.Diagnostics.Process.Start("Reporte " + titulo + ".html");
-
+            System.Diagnostics.Process.Start("Reporte " + titulo + ".pdf");
         }
 
 
