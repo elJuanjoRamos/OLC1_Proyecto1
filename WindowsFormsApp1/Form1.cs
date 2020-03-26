@@ -27,7 +27,7 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            string[] items = new string[] { "RESULT","AFN", "AFD", "TABLA" };
+            string[] items = new string[] { "RESULT","AFN", "AFD", "TABLA", "ARBOL" };
             combotipo.DataSource = items;
             combotipo.SelectedIndex = 0;
         }
@@ -302,10 +302,7 @@ namespace WindowsFormsApp1
                                     cadena = cadena + contenido;
                                     EvaluatorController.Instance.reportToken(appPath, expressionName + "-" + contador);
                                 }
-                                /*else if (EvaluatorController.Instance.SimulateExpressionWhitString(expressionName, strcadena))
-                                {
-                                    consola.AppendText("* La Cadena " + strcadena + " de la Expresion " + expressionName + " fue Evaluada correctamente\n");
-                                }*/
+                               
                                 else
                                 {
                                     String error = EvaluatorController.Instance.GetError();
@@ -444,6 +441,15 @@ namespace WindowsFormsApp1
                     comboAutomata.Items.Add(i);
                 }
             }
+            else if (type.Equals("ARBOL"))
+            {
+                comboAutomata.Items.Clear();
+                comboAutomata.SelectedItem = null;
+                foreach (String i in RegularExpressionController.Instance.GetArbol())
+                {
+                    comboAutomata.Items.Add(i);
+                }
+            }
         }
 
         private void comboAutomata_SelectedIndexChanged(object sender, EventArgs e)
@@ -461,9 +467,14 @@ namespace WindowsFormsApp1
                 {
                     var = appPath + "\\AFN\\" + automata + ".png";
                 }
-                else
+                else if(automata.Contains("Table"))
                 {
                     var = appPath + "\\Transitions Table\\" + automata + ".png";
+
+                }
+                else
+                {
+                    var = appPath + "\\Arboles\\" + automata + ".png";
 
                 }
                 Console.WriteLine(var);

@@ -15,6 +15,7 @@ namespace WindowsFormsApp1.Controller
         private ArrayList arrayListAFD = new ArrayList();
         private ArrayList arrayListAFN = new ArrayList();
         private ArrayList arrayListTabla = new ArrayList();
+        private ArrayList arrayListArbol = new ArrayList();
 
         private Stack stk = new Stack();
         public RegularExpressionController()
@@ -187,6 +188,10 @@ namespace WindowsFormsApp1.Controller
         {
             arrayListAFN.Add(name);
         }
+        public void InsertArbol(string name)
+        {
+            arrayListArbol.Add(name);
+        }
         public ArrayList GetAFNAutomata()
         {
             return arrayListAFN;
@@ -195,12 +200,17 @@ namespace WindowsFormsApp1.Controller
         {
             return arrayListTabla;
         }
+        public ArrayList GetArbol()
+        {
+            return arrayListArbol;
+        }
 
         public void ClearList()
         {
             arrayListAFD.Clear();
             arrayListAFN.Clear();
             arrayListTabla.Clear();
+            arrayListArbol.Clear();
         }
 
     }

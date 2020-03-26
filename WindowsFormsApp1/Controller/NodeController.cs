@@ -79,9 +79,9 @@ namespace WindowsFormsApp1.Controller
 
             //Envia la raiz para obtener los siguientes
             //elementsOfTable(dot);
-            
-            
-            dot.print(path, name + "Tree.jpg");
+
+            RegularExpressionController.Instance.InsertArbol(name + "Tree");
+            dot.print(path, name + "Tree");
 
             index++;
 

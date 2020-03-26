@@ -360,8 +360,6 @@ namespace WindowsFormsApp1.Controller
                         break;
 
                     case 12:
-                        
-
                         if (letra != ':')
                         {
                             if (letra == '\n') { row++; column = 0; }
@@ -371,11 +369,19 @@ namespace WindowsFormsApp1.Controller
                         }
                         else
                         {
-                            auxiliar +=  "\"";
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "Cadena_TODO");
-                            state = 0;
-                            auxiliar = "";
-                            i = i + 1;
+                            if (textInput[i+1].Equals(']'))
+                            {
+                                auxiliar += "\"";
+                                TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "Cadena_TODO");
+                                auxiliar = ""; 
+                                state = 0;
+                                i = i + 1;
+                            }
+                            else
+                            {
+                                auxiliar += letra;
+                                state = 12;
+                            }
                         }
                         break;
                     default:
