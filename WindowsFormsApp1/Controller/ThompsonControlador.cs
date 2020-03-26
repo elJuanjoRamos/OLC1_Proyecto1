@@ -95,15 +95,35 @@ namespace WindowsFormsApp1.Controller
                     Estado siguiente = t.Fin;
                     String simb = (String)t.Simbolo;
                     simb = simb.Trim('"');
+
+                    String valuatorSimb = "";
+                    if (simb.Contains("\\n"))
+                    {
+                        valuatorSimb = simb.Replace("\\n", ('\n').ToString());
+                    }
+                    if (simb.Contains("\\r"))
+                    {
+
+                        valuatorSimb = simb.Replace("\\r", ('\n').ToString());
+                    }
+                    if (simb.Contains("\\t"))
+                    {
+                        valuatorSimb = simb.Replace("\\t", ('\t').ToString());
+                    }
+                    else
+                    {
+                        valuatorSimb = simb;
+                    }
+
                     //Trata de convertir el simbolo del estado en char
                     Char value;
                     bool result;
-                    result = Char.TryParse(simb, out value);
+                    result = Char.TryParse(valuatorSimb, out value);
 
                     //Si se puede, agrega el estado siguiente al arreglo de alcanzados
                     if (result)
                     {
-                        if (simb.Equals(simbolo))
+                        if (valuatorSimb.Equals(simbolo))
                         {
                             alcanzados.Add(siguiente);
                         }
@@ -112,7 +132,7 @@ namespace WindowsFormsApp1.Controller
                     else
                     {
                         //Va a buscar a la lista de conjuntos el nombre y retorna sus elementos
-                        ArrayList listChar = SetController.Instance.GetElemntsOfSet(simb);
+                        ArrayList listChar = SetController.Instance.GetElemntsOfSet(valuatorSimb);
                         //Verifica que la lista no venga vacia
                         if (listChar != null)
                         {
@@ -126,7 +146,7 @@ namespace WindowsFormsApp1.Controller
                                 }
                             }
                         }
-                        else if (listChar == null && simb.Equals(simbolo))
+                        else if (listChar == null && valuatorSimb.Equals(simbolo))
                         {
 
                             alcanzados.Add(siguiente);

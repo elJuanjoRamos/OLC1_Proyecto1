@@ -84,7 +84,21 @@ namespace WindowsFormsApp1.Controller
                                 {
                                     isInterval = true;
                                 }
-                                elements.Add(t.Lexema);
+                                string cadena = t.Lexema.Trim('"');
+                                if (cadena.Length > 1)
+                                {
+                                    //Si la longitud del 'caracter' es mayor que 1, significa que vino un conjunto [:todo:]
+                                    //es decir, una cadena, se envia la cadena a separar caracter por caracter
+                                    foreach (String e in TODOElements(cadena))
+                                    {
+                                        elements.Add(e);
+                                    }
+                                }
+                                else
+                                {
+                                    //Si la longitud fue 1, significa que solo fue un caracter
+                                    elements.Add(cadena);
+                                }
                             }
                         }
                         else
@@ -152,7 +166,16 @@ namespace WindowsFormsApp1.Controller
             return null;
         }
 
+        public ArrayList TODOElements(String cadena)
+        {
+            ArrayList ar = new ArrayList();
+            for (int i = 0; i < cadena.Length; i++)
+            {
+                ar.Add(cadena[i].ToString());
+            }
 
+            return ar;
+        }
         public void ShowSets()
         {
             foreach (Set item in arrayListSets)

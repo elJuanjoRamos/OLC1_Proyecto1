@@ -49,6 +49,20 @@ namespace WindowsFormsApp1.Controller
         public bool SimulateExpression(string expressionName, string strToEvaluate)
         {
             clearTokens();
+
+            if (strToEvaluate.Contains("\\n"))
+            {
+                strToEvaluate.Replace("\\n", ('\n').ToString());
+            }
+            if (strToEvaluate.Contains("\\r"))
+            {
+                strToEvaluate.Replace("\\r", ('\n').ToString());
+            }
+            if (strToEvaluate.Contains("\\t"))
+            {
+                strToEvaluate.Replace("\\t", ('\t').ToString());
+            }
+
             //Se crea un array que tendra el alfabeto modificado
             ArrayList new_alphabet = new ArrayList();
             bool validate = false;
@@ -229,7 +243,23 @@ namespace WindowsFormsApp1.Controller
                             {
                                 if (i.Length > 1)
                                 {
-                                    cadenas.Add(i);
+                                    if (i.Contains("\\n"))
+                                    {
+                                        cadenas.Add(i.Replace("\\n", ('\n').ToString()));
+                                    }
+                                    if (i.Contains("\\r"))
+                                    {
+                                        
+                                        cadenas.Add(i.Replace("\\r", ('\n').ToString()));
+                                    }
+                                    if (i.Contains("\\t"))
+                                    {
+                                        cadenas.Add(i.Replace("\\t", ('\t').ToString()));
+                                    }
+                                    else
+                                    {
+                                        cadenas.Add(i);
+                                    }
                                     cabezas.Add(i[0].ToString());
                                 }
                             }
