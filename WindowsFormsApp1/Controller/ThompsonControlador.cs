@@ -16,6 +16,7 @@ namespace WindowsFormsApp1.Controller
         private readonly static ThompsonControlador instance = new ThompsonControlador();
         private String resultado;
         ArrayList arrayErrores = new ArrayList();
+        string error = "";
         public ThompsonControlador()
         {
         }
@@ -121,7 +122,7 @@ namespace WindowsFormsApp1.Controller
                     result = Char.TryParse(valuatorSimb, out value);
 
                     //Si se puede, agrega el estado siguiente al arreglo de alcanzados
-                    if (result)
+                    if (result && (SetController.Instance.GetElemntsOfSet(valuatorSimb) == null) )
                     {
                         if (valuatorSimb.Equals(simbolo))
                         {
@@ -150,7 +151,7 @@ namespace WindowsFormsApp1.Controller
                         {
 
                             alcanzados.Add(siguiente);
-                        }
+                        } 
                     }
 
                     
@@ -183,7 +184,6 @@ namespace WindowsFormsApp1.Controller
 
         public Boolean EvaluateExpression(String regex, Automata.Automata automata, ArrayList ar, bool isString)
         {
-            Console.WriteLine(automata);
             Estado inicial = automata.Inicio;
             List<Estado> estados = automata.Estados;
             List<Estado> aceptacion = new List<Estado>(automata.Aceptacion);

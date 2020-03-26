@@ -62,31 +62,32 @@ namespace WindowsFormsApp1.Controller
 
         public void Print(String name, String path)
         {
-            Node left = (Node)stk.Pop();
-            raiz = left;
-            
-            
-            Node temp = raiz;
-            //manda la raiz a numerar sus nodos
-
-            Node right = new Node("#");
-
-            Node dot = new Node(".", right, temp, false);
-
-            leafNode(dot);
-            setDesition(dot);
-            setRootAntNext(dot);
-
-            //Envia la raiz para obtener los siguientes
-            //elementsOfTable(dot);
-
-            RegularExpressionController.Instance.InsertArbol(name + "Tree");
-            dot.print(path, name + "Tree");
-
-            index++;
+            if (stk.Count > 0)
+            {
+                Node left = (Node)stk.Pop();
+                raiz = left;
 
 
+                Node temp = raiz;
+                //manda la raiz a numerar sus nodos
 
+                Node right = new Node("#");
+
+                Node dot = new Node(".", right, temp, false);
+
+                leafNode(dot);
+                setDesition(dot);
+                setRootAntNext(dot);
+
+                //Envia la raiz para obtener los siguientes
+                //elementsOfTable(dot);
+
+                RegularExpressionController.Instance.InsertArbol(name + "Tree");
+                dot.print(path, name + "Tree");
+
+                index++;
+
+            }
         }
         public void InsertStack(String s)
         {
@@ -395,11 +396,14 @@ namespace WindowsFormsApp1.Controller
                     }
                     else if (nroot.Element.Equals("?"))
                     {
-                        regularExpression.Add("(");
+                        ConvertExpression(nroot.LeftChild);
+                        regularExpression.Add("?");
+
+                        /*regularExpression.Add("(");
                         ConvertExpression(nroot.LeftChild);
                         regularExpression.Add("|");
                         regularExpression.Add("ε");
-                        regularExpression.Add(")");
+                        regularExpression.Add(")");*/
                     }
                     else if (nroot.Element.Equals("."))
                     {

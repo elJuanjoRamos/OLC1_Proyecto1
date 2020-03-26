@@ -107,6 +107,7 @@ namespace WindowsFormsApp1.Controller
                         }
                     }
                     Insert(name, elements, isInterval);
+                    isInterval = false;
                 }
             }
         }

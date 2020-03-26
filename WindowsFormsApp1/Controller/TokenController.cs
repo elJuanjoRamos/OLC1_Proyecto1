@@ -72,10 +72,21 @@ namespace WindowsFormsApp1.Controller
             for (int i = 0; i < arrayListTokens.Count; i++)
             {
                 Token tok = (Token)arrayListTokens[i];
+                string a = tok.Lexema;
+                if (tok.Description.Equals("ComentarioMultilinea"))
+                {
+                    a = a.Replace("<!", " ");
+                    a = a.Replace("!>", " ");
+
+                }
+                if (tok.Description.Equals("Cadena_TODO"))
+                {
+                    a = "[:" + a + ":]";
+                }
 
                 contenido = "<tr>\n" +
                     "     <th scope=\"row\">" + (i).ToString() + "</th>\n" +
-                    "     <td>" + tok.Lexema + "</td>\n" +
+                    "     <td>" + a + "</td>\n" +
                     "     <td>" + tok.Description + "</td>\n" +
                     "     <td>" + tok.Row + "</td>\n" +
                     "     <td>" + tok.Column + "</td>\n" +

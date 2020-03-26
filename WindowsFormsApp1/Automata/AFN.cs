@@ -56,13 +56,20 @@ namespace WindowsFormsApp1.Automata
                         Automata union_param1 = (Automata)pilaAFN.Pop();
                         Automata union_param2 = (Automata)pilaAFN.Pop();
                         Automata union_result = union(union_param1, union_param2);
-
-
                         pilaAFN.Push(union_result);
 
                         this.Afn = union_result;
                         break;
+                    case "?":
 
+                        Automata s = afnSimple("ε");
+                        Automata union_q1 = (Automata)pilaAFN.Pop();
+                        Automata qtion = union(union_q1, s);
+
+                        pilaAFN.Push(qtion);
+
+                        this.Afn = qtion;
+                        break;
                     default:
                         //crear un automata con cada simbolo
                         Automata simple = afnSimple(c);
@@ -135,6 +142,9 @@ namespace WindowsFormsApp1.Automata
             afn_kleene.LenguajeR = (automataFN.LenguajeR);
             return afn_kleene;
         }
+
+
+
 
         public Automata concatenacion(Automata AFN1, Automata AFN2)
         {

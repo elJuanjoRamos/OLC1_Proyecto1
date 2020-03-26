@@ -34,29 +34,49 @@ namespace WindowsFormsApp1.Controller
         {
             String texto = "";
             ArrayList l = TokenController.Instance.getArrayListTokens();
+
+            
+
             for (int i = 0; i < l.Count; i++)
             {
+
+
                 ArrayList temp = new ArrayList(); //Array que va a almacenar los elementos de la expresion
                 Token t = (Token)l[i];
-                if (t.Lexema.Equals(">"))
+
+                if (t.Lexema.ToLower().Equals("conj"))
                 {
-                    
-                    //busca el nombre de la expresion
-                    for (int j = i; j > 0; j--)
+                    for (int j = i+1; j < l.Count; j++)
                     {
-                        Token a = (Token)l[j];
-                        if (a.Description.Equals("Identificador"))
+                        if (((Token)l[j]).Lexema.Equals(";"))
                         {
-                            texto = a.Lexema;
+                            i = j;
                             break;
                         }
                     }
+                }
+                else
+                {
 
-                    Token t1 = (Token)l[i + 2]; // token de inicio de la expresion
-
-                    if (t1 != null && !t1.Lexema.Equals("~") && !t1.Lexema.Equals(","))
+                    if (t.Lexema.Equals(">"))
                     {
-                        
+
+                        //busca el nombre de la expresion
+                        for (int j = i; j > 0; j--)
+                        {
+                            Token a = (Token)l[j];
+                            if (a.Description.Equals("Identificador"))
+                            {
+                                texto = a.Lexema;
+                                break;
+                            }
+                        }
+
+                        Token t1 = (Token)l[i + 2]; // token de inicio de la expresion
+
+                        if (t1 != null && !t1.Lexema.Equals("~") && !t1.Lexema.Equals(","))
+                        {
+
                             //itera en la expresion y guarda los elementos
                             for (int j = i + 1; j < l.Count; j++)
                             {
@@ -76,9 +96,12 @@ namespace WindowsFormsApp1.Controller
                                     break;
                                 }
                             }
-                        
+
+                        }
                     }
+
                 }
+
             }
             
         }

@@ -91,29 +91,31 @@ namespace WindowsFormsApp1.Controller
 
 
                         
-                        if (result || alphabetChar.Equals("\\n") || alphabetChar.Equals("\\t") || alphabetChar.Equals("\\r")
-                            || alphabetChar.Equals("\"") || alphabetChar.Equals("\'"))
+                        if (result && (SetController.Instance.GetElemntsOfSet(alphabetChar) == null))
                         {
-                            if (alphabetChar.Equals("\\n"))
+                            if (result || alphabetChar.Equals("\\n") || alphabetChar.Equals("\\t") || alphabetChar.Equals("\\r")
+                            || alphabetChar.Equals("\"") || alphabetChar.Equals("\'"))
                             {
+                                if (alphabetChar.Equals("\\n"))
+                                {
 
-                                new_alphabet.Add(('\n').ToString()); ;
+                                    new_alphabet.Add(('\n').ToString()); ;
+                                }
+                                else if (alphabetChar.Equals("\\t"))
+                                {
+                                    new_alphabet.Add(('\t').ToString()); ;
+                                }
+                                else if (alphabetChar.Equals("\\r"))
+                                {
+                                    new_alphabet.Add(('\r').ToString()); ;
+                                }
+                                else
+                                {
+                                    new_alphabet.Add(alphabetChar);
+                                }
+                                //Si logra converit a char o si es un caracter especial, significa que solo es un simbolo
+                                //y lo agrega al nuevo alfabeto
                             }
-                            else if (alphabetChar.Equals("\\t"))
-                            {
-                                new_alphabet.Add(('\t').ToString()); ;
-                            }
-                            else if (alphabetChar.Equals("\\r"))
-                            {
-                                new_alphabet.Add(('\r').ToString()); ;
-                            }
-                            else
-                            {
-                                new_alphabet.Add(alphabetChar);
-                            }
-                            //Si logra converit a char o si es un caracter especial, significa que solo es un simbolo
-                            //y lo agrega al nuevo alfabeto
-                            
                         }
                         else
                         {
@@ -188,7 +190,7 @@ namespace WindowsFormsApp1.Controller
                                     //Si algun elemento no se encuentra del alfabeto lo guarda en un array de errores
                                     Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
                                     arrayErroresEvaluados.Add(t);
-                                    //break;
+                                    break;
                                 }
                             }
                             //Si contador sigue en uno es por que el alfabeto contiene todos los caracteres del 

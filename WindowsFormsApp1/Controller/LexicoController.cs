@@ -72,6 +72,22 @@ namespace WindowsFormsApp1.Controller
                         {
                             switch (letra)
                             {
+                                //ASCII
+                                case '!':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Exclamacion");
+                                    break;
+                                case '¡':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Exclamacion");
+                                    break;
+                                case '&':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_&");
+                                    break;
+                                case '@':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Arroba");
+                                    break;
+
+
+
                                 case '.':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Punto");
                                     break;
@@ -93,6 +109,12 @@ namespace WindowsFormsApp1.Controller
                                 case '[':
                                     Console.WriteLine("entro");
                                     state = 11;
+                                    break;
+                                case '(':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Izq");
+                                    break;
+                                case ')':
+                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Der");
                                     break;
                                 case ']':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Corchete_Der");
@@ -151,36 +173,18 @@ namespace WindowsFormsApp1.Controller
                                 case '<':
                                     state = 5;
                                     auxiliar += letra;
-                                    Console.WriteLine("ESTADO 5");
                                     break;
 
                                 /*SIMBOLOS ASCII*/
-                                case '!':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Exclamacion");
-                                    break;
                                 case '#':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Numeral");
                                     break;
                                 case '$':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo_Dolar");
                                     break;
-                                case '&':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_&");
-                                    break;
-                                case '(':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Izq");
-                                    break;
-                                case ')':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Parentesis_Der");
-                                    break;
                                 case '=':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Igual");
                                     break;
-                                
-                                case '@':
-                                    TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Arroba");
-                                    break;
-                             
                                 case '^':
                                     TokenController.Instance.agregarToken(row, column - 1, letra.ToString(), "TK_Simbolo");
                                     break;
@@ -262,6 +266,13 @@ namespace WindowsFormsApp1.Controller
                             state = 6;
                             auxiliar += letra;
                         }
+                        else
+                        {
+                            auxiliar = "";
+                            TokenController.Instance.agregarToken(row, column - 1, "<", "TK_Menor");
+                            state =0;
+                            i--;
+                        }
                         break;
                     case 6:
                         if (letra != '!')
@@ -340,8 +351,9 @@ namespace WindowsFormsApp1.Controller
                         }
                         else
                         {
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TD_Desconocido");
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Division");
                             auxiliar = "";
+                            i--;
                             break;
                         }
 
