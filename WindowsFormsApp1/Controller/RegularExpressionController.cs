@@ -61,7 +61,7 @@ namespace WindowsFormsApp1.Controller
                                     if (!t2.Lexema.Equals("{") && !t2.Lexema.Equals("}"))
                                     {
                                         string a = t2.Lexema;
-                                        temp.Add(a.Trim());
+                                        temp.Add(a);
                                     }
                                 }
                                 else

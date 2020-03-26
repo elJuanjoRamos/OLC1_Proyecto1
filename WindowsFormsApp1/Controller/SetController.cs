@@ -143,6 +143,7 @@ namespace WindowsFormsApp1.Controller
         {
             foreach (Set set in arrayListSets)
             {
+
                 if (set.Name.Equals(setName))
                 {
                     return set.Elements;

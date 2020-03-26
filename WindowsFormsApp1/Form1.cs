@@ -306,6 +306,7 @@ namespace WindowsFormsApp1
                                     cadena = cadena + contenido;
                                     EvaluatorController.Instance.reportError(appPath, expressionName + "-" + contador);
                                 }
+                                contador++;
 
                             }
                             i = j;
@@ -313,7 +314,7 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
-                contador++;
+                
 
             }
 
@@ -348,7 +349,7 @@ namespace WindowsFormsApp1
             "</head>" +
             "<body>\n" +
             "  <nav class=\"navbar navbar-light bg-light\">\n" +
-            "    <span class=\"navbar-brand mb-0 h1\">Lenguajes formales</span>\n" +
+            "    <span class=\"navbar-brand mb-0 h1\">Compiladores 1</span>\n" +
             "  </nav>";
 
             string body1 = "<div class=\"container\">\n" +
@@ -401,7 +402,6 @@ namespace WindowsFormsApp1
 
             /*creando archivo html*/
             File.WriteAllText("Reporte " + titulo + ".html", html);
-            System.Diagnostics.Process.Start("Reporte " + titulo + ".html");
             System.Diagnostics.Process.Start("Reporte " + titulo + ".pdf");
         }
     }

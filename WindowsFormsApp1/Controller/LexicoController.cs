@@ -312,28 +312,29 @@ namespace WindowsFormsApp1.Controller
                         if (letra == 't')
                         {
                             auxiliar += letra;
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Tabulacion");
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), ('\t').ToString(), "TK_Tabulacion");
                             auxiliar = "";
                             break;
                         }
                         else if (letra == '"')
                         {
                             auxiliar += letra;
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Doble");
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), ('\"').ToString(), "TK_Comilla_Doble");
                             auxiliar = "";
                             break;
                         }
-                        else if (letra == 'n')
+                        else if (letra == 'n' || letra == 'r')
                         {
                             auxiliar += letra;
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Salto_Linea");
+                            Console.WriteLine(auxiliar);
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), ('\n').ToString(), "TK_Salto_Linea");
                             auxiliar = "";
                             break;
                         }
                         if (letra.ToString().Equals("'"))
                         {
                             auxiliar += letra;
-                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), auxiliar, "TK_Comilla_Simple");
+                            TokenController.Instance.agregarToken(row, (column - auxiliar.Length), ('\'').ToString(), "TK_Comilla_Simple");
                             auxiliar = "";
                             break;
                         }

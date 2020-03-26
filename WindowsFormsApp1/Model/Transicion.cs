@@ -34,8 +34,23 @@ namespace WindowsFormsApp1.Model
 
         public String DOT_String()
         {
-
             String text = Simbolo;
+
+            if (Simbolo == "\t")
+            {
+                text = "\\\\t";
+            }
+            else if (Simbolo == "\n")
+            {
+                text = "\\\\n";
+            }
+            if (Simbolo == "\r")
+            {
+                text = "\\\\r";
+            }
+
+
+
             if (Simbolo.Contains("\\"))
             {
                 text = text.Replace("\\", "\\\\");

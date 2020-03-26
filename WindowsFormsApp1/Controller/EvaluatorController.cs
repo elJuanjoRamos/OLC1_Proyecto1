@@ -67,8 +67,7 @@ namespace WindowsFormsApp1.Controller
                     foreach (var alphabet in afd_temp.Alfabeto)
                     {
                         //Quita las comillas y los espacios;
-                        String alphabetChar = alphabet.Replace('"', ' ');
-                        alphabetChar = alphabetChar.Trim();
+                        String alphabetChar = alphabet.Trim('"');
                         
                         //Intenta convertir el alfabeto a char
                         Char value;
@@ -76,12 +75,31 @@ namespace WindowsFormsApp1.Controller
                         result = Char.TryParse(alphabetChar, out value);
 
 
-                        if (result || alphabetChar.Equals("\n") || alphabetChar.Equals("\t") || alphabetChar.Equals("\r")
+
+                        
+                        if (result || alphabetChar.Equals("\\n") || alphabetChar.Equals("\\t") || alphabetChar.Equals("\\r")
                             || alphabetChar.Equals("\"") || alphabetChar.Equals("\'"))
                         {
+                            if (alphabetChar.Equals("\\n"))
+                            {
+
+                                new_alphabet.Add(('\n').ToString()); ;
+                            }
+                            else if (alphabetChar.Equals("\\t"))
+                            {
+                                new_alphabet.Add(('\t').ToString()); ;
+                            }
+                            else if (alphabetChar.Equals("\\r"))
+                            {
+                                new_alphabet.Add(('\r').ToString()); ;
+                            }
+                            else
+                            {
+                                new_alphabet.Add(alphabetChar);
+                            }
                             //Si logra converit a char o si es un caracter especial, significa que solo es un simbolo
                             //y lo agrega al nuevo alfabeto
-                            new_alphabet.Add(alphabetChar);
+                            
                         }
                         else
                         {
@@ -96,8 +114,8 @@ namespace WindowsFormsApp1.Controller
                                 //se itera sobre los elementos del conjuntos
                                 foreach (var letter in listChar)
                                 {
-                                    String letter_temp = letter.ToString().Replace('"', ' ');
-                                    letter_temp = letter_temp.Trim();
+                                    String letter_temp = letter.ToString().Trim('"');
+                                    
                                     //Se agregan los elemenentos al alfabeto
                                     if (!new_alphabet.Contains(letter_temp))
                                     {
@@ -132,9 +150,8 @@ namespace WindowsFormsApp1.Controller
 
                     //Se itera sobre la cadena de entrada
                     //Quita las comillas y los espacios;
-                    String str_temp = strToEvaluate.Replace('"', ' ');
-                    str_temp = str_temp.Trim();
-
+                    String str_temp = strToEvaluate.Trim('"');
+                    
 
                     switch (swcase)
                     {
@@ -197,51 +214,63 @@ namespace WindowsFormsApp1.Controller
                         //Cuando vienen cadenas;
                         case 1:
 
+                            //Array que va a guardar unicamente las cadenas
+                            ArrayList cadenas = new ArrayList();
 
-                            String[] new_a = str_temp.Split(' ');
-                            ArrayList nuevaCadenaTemp = new ArrayList();
-                            ArrayList nuevaCadena = new ArrayList();
+                            ArrayList cadenas2 = new ArrayList();
 
-                            //VERIFICA QUE TODAS LAS CADENAS ESTA DENTRO DEL ALFABETO
-                            for (int i = 0; i < new_a.Length; i++)
+                            ArrayList cabezas = new ArrayList();
+
+                            //Esta variable va a ser un contador de letras 
+                            String iteradorCadena = "";
+                            int cont = 0;
+
+                            foreach (String i in new_alphabet)
                             {
-                                //elemento en la cadena de entrada
-                                String elementInString = new_a[i];
-
-                                int cont = 0;
-                                int index = 0;
-
-
-
-                                for (int j = 0; j < new_alphabet.Count; j++)
+                                if (i.Length > 1)
                                 {
-                                    String evaluator = (String)new_alphabet[j];
-                                    if (evaluator.Contains(elementInString))
-                                    {
-
-                                        index = j;
-                                        cont = 1;
-                                        break;
-                                    }
+                                    cadenas.Add(i);
+                                    cabezas.Add(i[0].ToString());
                                 }
-                                //Significa que encontro el elemento
-                                if (cont == 1)
+                            }
+
+
+                            for (int i = 0; i < str_temp.Length; i++)
+                            {
+
+                                char a = str_temp[i];
+
+                                if (cabezas.Contains(a.ToString()))
                                 {
-                                    String e = (String)new_alphabet[index];
-                                    if (!nuevaCadena.Contains(e))
+                                    int contInterno = 0;
+                                    for (int j = i; j < str_temp.Length; j++)
                                     {
-                                        nuevaCadena.Add(e);
+                                        iteradorCadena = iteradorCadena + str_temp[j];
+                                        if (cadenas.Contains(iteradorCadena))
+                                        {
+                                            i = j;
+                                            contInterno = 1;
+                                            break;
+                                        }
+                                    }
+                                    if (contInterno != 0)
+                                    {
+                                        cadenas2.Add(iteradorCadena);
+                                        iteradorCadena = "";
+                                    }
+                                    else
+                                    {
+                                        cadenas2.Add(str_temp[i].ToString());
                                     }
                                 }
                                 else
                                 {
-                                    error = "X Error en " + strToEvaluate + ". La cadena " + i + ", no se encuentra dentro del alfabeto\n";
-                                    return false;
+                                    cadenas2.Add(str_temp[i].ToString());
                                 }
-
-
+                                iteradorCadena = "";
                             }
-                            validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, nuevaCadena, true);
+
+                            validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, cadenas2, true);
                             if (!validate)
                             {
                                 error = "X La cadena " + strToEvaluate + " contiene errores.\n";

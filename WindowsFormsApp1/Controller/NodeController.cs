@@ -339,7 +339,32 @@ namespace WindowsFormsApp1.Controller
             {
                 if (nroot.LeftChild == null && nroot.RightChild == null)
                 {
-                    regularExpression.Add(nroot.Element.ToString());
+                    string b = nroot.Element;
+                    string a = "";
+                    if (nroot.Element.Equals("\".\"") || 
+                        nroot.Element.Equals("\"*\""))
+                    {
+                        a = nroot.Element;
+                    }
+                    else if (nroot.Element == "\n")
+                    {
+                        a = ('\n').ToString();
+                    }
+                    else if (nroot.Element.Equals("\t"))
+                    {
+                        a = ('\t').ToString();
+
+                    }
+                    else if (nroot.Element.Equals("\r"))
+                    {
+                        a = ('\r').ToString();
+                    }
+                    else
+                    {
+                        a = nroot.Element.Trim('"');
+                    }
+
+                    regularExpression.Add(a);
                 } else
                 {
                     if (nroot.Element.Equals("+"))

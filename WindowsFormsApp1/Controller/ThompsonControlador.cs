@@ -94,7 +94,7 @@ namespace WindowsFormsApp1.Controller
 
                     Estado siguiente = t.Fin;
                     String simb = (String)t.Simbolo;
-
+                    simb = simb.Trim('"');
                     //Trata de convertir el simbolo del estado en char
                     Char value;
                     bool result;
