@@ -12,6 +12,10 @@ namespace WindowsFormsApp1.Controller
     {
         private readonly static RegularExpressionController instance = new RegularExpressionController();
         private ArrayList arrayListER = new ArrayList();
+        private ArrayList arrayListAFD = new ArrayList();
+        private ArrayList arrayListAFN = new ArrayList();
+        private ArrayList arrayListTabla = new ArrayList();
+
         private Stack stk = new Stack();
         public RegularExpressionController()
         {
@@ -137,19 +141,23 @@ namespace WindowsFormsApp1.Controller
             aFN.construirAutomata(regex);
             Automata.Automata afn_result = aFN.Afn;
             ThompsonControlador.Instance.generarDOT("AFN", name, afn_result);
-
+            InsertAutomataAFNName("AFN "+ name);
             //CONSTRUYE EL AUTOMATA AFD
             AFD AFD = new AFD();
             AFD.conversionAFN(afn_result);
             Automata.Automata afd_result = AFD.Afd;
-
+          
             //CONSTRUYE EL AUTOMATA SIN ESTADO STRAMPA
             Automata.Automata afd_trampa = AFD.RemoveCheatStates(afd_result);
             ThompsonControlador.Instance.generarDOT("AFD", name, afd_trampa);
+            InsertAutomataAFDName("AFD "+ name);
+
+
+
 
             //CONSTRUYE LA TABLA
             ThompsonControlador.Instance.TableConstructor(name, path, afd_trampa);
-
+            InsertTablaName(name+"Table");
             //ENVIA EL AUTOMATA A SER GUARDADO PARA POSTERIOR EVALUACION
             EvaluatorController.Instance.Insert(name, afd_trampa);
 
@@ -163,7 +171,37 @@ namespace WindowsFormsApp1.Controller
             return arrayListER;
         }
 
+        public void InsertAutomataAFDName(string name)
+        {
+            arrayListAFD.Add(name);
+        }
+        public void InsertTablaName(string name)
+        {
+            arrayListTabla.Add(name);
+        }
+        public ArrayList GetAFDAutomata()
+        {
+            return arrayListAFD;
+        }
+        public void InsertAutomataAFNName(string name)
+        {
+            arrayListAFN.Add(name);
+        }
+        public ArrayList GetAFNAutomata()
+        {
+            return arrayListAFN;
+        }
+        public ArrayList GetTabla()
+        {
+            return arrayListTabla;
+        }
 
+        public void ClearList()
+        {
+            arrayListAFD.Clear();
+            arrayListAFN.Clear();
+            arrayListTabla.Clear();
+        }
 
     }
 }

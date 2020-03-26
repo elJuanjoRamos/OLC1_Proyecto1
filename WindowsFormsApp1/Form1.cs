@@ -12,17 +12,24 @@ using System.Windows.Forms;
 using WindowsFormsApp1.Automata;
 using WindowsFormsApp1.Controller;
 using WindowsFormsApp1.Model;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace WindowsFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
         public string charInicial = "";
         string appPath = Application.StartupPath;
         string fileName = "";
+        string titulo1;
         public Form1()
         {
             InitializeComponent();
+            string[] items = new string[] { "RESULT","AFN", "AFD", "TABLA" };
+            combotipo.DataSource = items;
+            combotipo.SelectedIndex = 0;
         }
 
         private void nuevaPestañaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -30,8 +37,8 @@ namespace WindowsFormsApp1
             var tp = new TabPage("Pestaña Nueva ");
             tabControl1.Controls.Add(tp);
             var rtb = new RichTextBox();
-            rtb.Width = 500;
-            rtb.Height = 465;
+            rtb.Width = 470;
+            rtb.Height = 470;
             System.Drawing.Font currentFont = richTextBox1.SelectionFont;
             FontStyle newFontStyle = (FontStyle)(currentFont.Style | FontStyle.Regular);
             rtb.SelectionFont = new System.Drawing.Font(currentFont.FontFamily, 11, newFontStyle);
@@ -208,7 +215,10 @@ namespace WindowsFormsApp1
                     TokenController.Instance.clearListaTokens();
                     TokenController.Instance.clearListaTokensError();
                     LexicoController.Instance.Analizer(rtb.Text);
-
+                    RegularExpressionController.Instance.ClearList();
+                    comboAutomata.Items.Clear();
+                    comboAutomata.SelectedItem = null;
+                    combotipo.SelectedIndex = 0;
                     /*foreach(Token t in TokenController.Instance.getArrayListTokens())
                     {
                         Console.WriteLine("ID: " + t.Description + " - " + t.Lexema);
@@ -399,10 +409,83 @@ namespace WindowsFormsApp1
 
             var Renderer = new IronPdf.HtmlToPdf();
             Renderer.RenderHtmlAsPdf(html).SaveAs("Reporte " + titulo + ".pdf");
-
+            this.titulo1 = titulo;
             /*creando archivo html*/
             File.WriteAllText("Reporte " + titulo + ".html", html);
-            System.Diagnostics.Process.Start("Reporte " + titulo + ".pdf");
+        }
+
+        private void combotipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string type = combotipo.SelectedItem.ToString();
+            if (type.Equals("AFD"))
+            {
+                comboAutomata.Items.Clear();
+                comboAutomata.SelectedItem = null;
+                foreach (String i in RegularExpressionController.Instance.GetAFDAutomata())
+                {
+                    comboAutomata.Items.Add(i);
+                }
+            }
+            else if (type.Equals("AFN"))
+            {
+                comboAutomata.Items.Clear();
+                comboAutomata.SelectedItem = null;
+                foreach (String i in RegularExpressionController.Instance.GetAFNAutomata())
+                {
+                    comboAutomata.Items.Add(i);
+                }
+            }
+            else if (type.Equals("TABLA"))
+            {
+                comboAutomata.Items.Clear();
+                comboAutomata.SelectedItem = null;
+                foreach (String i in RegularExpressionController.Instance.GetTabla())
+                {
+                    comboAutomata.Items.Add(i);
+                }
+            }
+        }
+
+        private void comboAutomata_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (comboAutomata.SelectedItem != null)
+            {
+                String automata = comboAutomata.SelectedItem.ToString();
+                string var = "";
+                if (automata.Contains("AFD"))
+                {
+                    var = appPath + "\\AFD\\" + automata + ".png";
+                }
+                else if(automata.Contains("AFN")) 
+                {
+                    var = appPath + "\\AFN\\" + automata + ".png";
+                }
+                else
+                {
+                    var = appPath + "\\Transitions Table\\" + automata + ".png";
+
+                }
+                Console.WriteLine(var);
+                if (File.Exists(var))
+                {
+                    //System.Drawing.Image img = System.Drawing.Image.FromFile(var.Replace("\"", ""));
+                    pictureGrafico.Image = new Bitmap(var.Replace("\"", ""));
+                }
+                else
+                {
+                    var = appPath + "\\404" + ".jpg";
+                    pictureGrafico.Image = new Bitmap(var.Replace("\"", ""));
+                }
+
+            }
+            
+            
+        }
+
+        private void reporteDeConsolaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("Reporte " + titulo1 + ".pdf");
         }
     }
 }

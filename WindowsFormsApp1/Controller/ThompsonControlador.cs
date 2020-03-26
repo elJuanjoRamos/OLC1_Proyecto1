@@ -296,9 +296,8 @@ namespace WindowsFormsApp1.Controller
             System.IO.File.WriteAllText(nombreArchivo + ".dot", texto);
             //Application.StartupPath
             String path = Application.StartupPath;
-            
 
-            
+                        
             try
             {
                 
@@ -310,7 +309,6 @@ namespace WindowsFormsApp1.Controller
                 }
 
                 String pngPath = path + "\\" + nombreArchivo;
-
                 var command = "dot -Tpng \"" + path + "\\" + nombreArchivo + ".dot\"  -o \"" + pngPath + "\\" + nombreArchivo + " " + pngname + ".png\"   ";
                 //Console.WriteLine(command);
                 var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
