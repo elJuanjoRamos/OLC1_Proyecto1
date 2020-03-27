@@ -498,5 +498,15 @@ namespace WindowsFormsApp1
         {
             System.Diagnostics.Process.Start("Reporte " + titulo1 + ".pdf");
         }
+
+        private void acercaDeProyectoNo1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            alertMessage("Nombre: Juan Jose Ramos Campos\nCarnet:201801262\nCurso:Lenguajes y Compiladores 1\nPrimer semestre, 2020");
+        }
+
+        private void manualDeAplicaciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("manual.pdf");
+        }
     }
 }

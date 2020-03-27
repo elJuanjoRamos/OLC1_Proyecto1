@@ -48,7 +48,10 @@ namespace WindowsFormsApp1.Model
             {
                 text = "\\\\r";
             }
-
+            if (Simbolo.Equals(" "))
+            {
+                text = "space";
+            }
 
 
             if (Simbolo.Contains("\\"))

@@ -167,63 +167,59 @@ namespace WindowsFormsApp1.Controller
                     //Se itera sobre la cadena de entrada
                     //Quita las comillas y los espacios;
                     String str_temp = strToEvaluate.Trim('"');
-                    
+
+
+
+
+                    //Variable 'booleana' sirve para determinar si continuar evaluando o no;
+                    int countAux = 1;
+                    Char ch = ' ';
+                    for (int i = 0; i < str_temp.Length; i++)
+                    {
+                        //Verifica que todos los elementos esten dentro del alfabeto
+                        ch = str_temp[i];
+
+                        if (!new_alphabet.Contains(ch.ToString()))
+                        {
+                            //sirve para ver si las cadenas contienen el elemnto
+                            int contadorInterno = 0;
+                            foreach (string str in new_alphabet)
+                            {
+                                if (str.Length > 1)
+                                {
+                                    if (str.Contains(ch.ToString()))
+                                    {
+                                        contadorInterno = 1;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (contadorInterno != 1)
+                            {
+                                countAux = 0;
+                                //Si algun elemento no se encuentra del alfabeto lo guarda en un array de errores
+                                Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
+                                arrayErroresEvaluados.Add(t);
+                                break;
+                            }
+                        }
+                    }
+
+                    //Uno o mas caracteres no se encuentran dentro del alfabeto del automata
+                    if (countAux == 0)
+                    {
+                        error = "X Error en " + strToEvaluate + ". El caracter " + ch + ", no se encuentra dentro del alfabeto\n";
+                        return false;
+                    }
+
 
                     switch (swcase)
                     {
                         //Cuando solo vienen simbolos o conjuntos
                         case 0:
-
-                            
-                            //Variable 'booleana' sirve para determinar si continuar evaluando o no;
-                            int countAux = 1;
-                            Char ch = ' ';
-                            for (int i = 0; i < str_temp.Length; i++)
-                            {
-                                //Verifica que todos los elementos esten dentro del alfabeto
-                                ch = str_temp[i];
-
-                                
-                                if (!new_alphabet.Contains(ch.ToString()))
-                                {
-                                    countAux = 0;
-                                    //Si algun elemento no se encuentra del alfabeto lo guarda en un array de errores
-                                    Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
-                                    arrayErroresEvaluados.Add(t);
-                                    break;
-                                }
-                            }
-                            //Si contador sigue en uno es por que el alfabeto contiene todos los caracteres del 
-                            //string a evaluar
-                            if (countAux == 1)
-                            {
-                                //Se envia a evaluar la expresion
-
-                                validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, null, false);
-
-
-                                //si la validacion fue exitosa significa que la cadena fue valida
-                                if (validate)
-                                {
-                                    //Se agregan los tokens evaluados a la lista que se va a imprimir
-                                    for (int i = 0; i < str_temp.Length; i++)
-                                    {
-                                        Token t = new Token(0, str_temp[i].ToString(), "Carcter_"+ str_temp[i].ToString(), i, 0);
-                                        arrayTokensEvaluados.Add(t);
-                                    }
-
-                                }
-                                else
-                                {
-                                    error = "X La cadena " + strToEvaluate + " contiene errores.\n";
-                                }
-                            }
-                            else
-                            {
-                                error = "X Error en " + strToEvaluate + ". El caracter " + ch + ", no se encuentra dentro del alfabeto\n";
-                                return false;
-                            }
-
+                            //Se envia a evaluar la expresion
+                            validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, null, false);
                             break;
 
 
@@ -301,19 +297,40 @@ namespace WindowsFormsApp1.Controller
                                 }
                                 iteradorCadena = "";
                             }
-
                             validate = ThompsonControlador.Instance.EvaluateExpression(str_temp, afd_temp, cadenas2, true);
-                            if (!validate)
-                            {
-                                error = "X La cadena " + strToEvaluate + " contiene errores.\n";
-                                return false;
-                            }
-
                             break;
                         default:
                             break;
                     }
 
+
+
+
+
+
+
+
+                    //si la validacion fue exitosa significa que la cadena fue valida
+                    if (validate)
+                    {
+                        //Se agregan los tokens evaluados a la lista que se va a imprimir
+                        for (int i = 0; i < str_temp.Length; i++)
+                        {
+                            Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
+                            arrayTokensEvaluados.Add(t);
+                        }
+
+                    }
+                    else
+                    {
+
+                        error = "X " +ThompsonControlador.Instance.getError() + "\n";
+                        for (int i = 0; i < str_temp.Length; i++)
+                        {
+                            Token t = new Token(0, str_temp[i].ToString(), "Carcter_" + str_temp[i].ToString(), i, 0);
+                            arrayErroresEvaluados.Add(t);
+                        }
+                    }
                     break;
                 }
 

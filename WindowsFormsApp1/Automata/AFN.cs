@@ -50,7 +50,6 @@ namespace WindowsFormsApp1.Automata
                         pilaAFN.Push(concat_result);
                         this.Afn = concat_result;
                         break;
-
                     case "|":
 
                         Automata union_param1 = (Automata)pilaAFN.Pop();

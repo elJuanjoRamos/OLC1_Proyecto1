@@ -38,6 +38,7 @@
             this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reporteDeTokensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reporteDeErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reporteDeConsolaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualDeAplicaciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualTécnicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,6 @@
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureGrafico = new System.Windows.Forms.PictureBox();
-            this.reporteDeConsolaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,7 +75,7 @@
             this.ayudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(57, 100);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(228, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(378, 28);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -139,16 +139,23 @@
             // reporteDeTokensToolStripMenuItem
             // 
             this.reporteDeTokensToolStripMenuItem.Name = "reporteDeTokensToolStripMenuItem";
-            this.reporteDeTokensToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.reporteDeTokensToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
             this.reporteDeTokensToolStripMenuItem.Text = "Reporte de Tokens";
             this.reporteDeTokensToolStripMenuItem.Click += new System.EventHandler(this.reporteDeTokensToolStripMenuItem_Click);
             // 
             // reporteDeErrorToolStripMenuItem
             // 
             this.reporteDeErrorToolStripMenuItem.Name = "reporteDeErrorToolStripMenuItem";
-            this.reporteDeErrorToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.reporteDeErrorToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
             this.reporteDeErrorToolStripMenuItem.Text = "Reporte de Error";
             this.reporteDeErrorToolStripMenuItem.Click += new System.EventHandler(this.reporteDeErrorToolStripMenuItem_Click);
+            // 
+            // reporteDeConsolaToolStripMenuItem
+            // 
+            this.reporteDeConsolaToolStripMenuItem.Name = "reporteDeConsolaToolStripMenuItem";
+            this.reporteDeConsolaToolStripMenuItem.Size = new System.Drawing.Size(223, 26);
+            this.reporteDeConsolaToolStripMenuItem.Text = "Reporte de Consola";
+            this.reporteDeConsolaToolStripMenuItem.Click += new System.EventHandler(this.reporteDeConsolaToolStripMenuItem_Click);
             // 
             // ayudaToolStripMenuItem
             // 
@@ -165,6 +172,7 @@
             this.manualDeAplicaciónToolStripMenuItem.Name = "manualDeAplicaciónToolStripMenuItem";
             this.manualDeAplicaciónToolStripMenuItem.Size = new System.Drawing.Size(259, 26);
             this.manualDeAplicaciónToolStripMenuItem.Text = "Manual de Aplicación";
+            this.manualDeAplicaciónToolStripMenuItem.Click += new System.EventHandler(this.manualDeAplicaciónToolStripMenuItem_Click);
             // 
             // manualTécnicoToolStripMenuItem
             // 
@@ -177,6 +185,7 @@
             this.acercaDeProyectoNo1ToolStripMenuItem.Name = "acercaDeProyectoNo1ToolStripMenuItem";
             this.acercaDeProyectoNo1ToolStripMenuItem.Size = new System.Drawing.Size(259, 26);
             this.acercaDeProyectoNo1ToolStripMenuItem.Text = "Acerca de Proyecto No. 1";
+            this.acercaDeProyectoNo1ToolStripMenuItem.Click += new System.EventHandler(this.acercaDeProyectoNo1ToolStripMenuItem_Click);
             // 
             // button1
             // 
@@ -322,13 +331,6 @@
             this.pictureGrafico.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureGrafico.TabIndex = 0;
             this.pictureGrafico.TabStop = false;
-            // 
-            // reporteDeConsolaToolStripMenuItem
-            // 
-            this.reporteDeConsolaToolStripMenuItem.Name = "reporteDeConsolaToolStripMenuItem";
-            this.reporteDeConsolaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.reporteDeConsolaToolStripMenuItem.Text = "Reporte de Consola";
-            this.reporteDeConsolaToolStripMenuItem.Click += new System.EventHandler(this.reporteDeConsolaToolStripMenuItem_Click);
             // 
             // Form1
             // 

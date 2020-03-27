@@ -17,6 +17,7 @@ namespace WindowsFormsApp1.Controller
         private String resultado;
         ArrayList arrayErrores = new ArrayList();
         string error = "";
+        string simbolo = "";
         public ThompsonControlador()
         {
         }
@@ -196,9 +197,14 @@ namespace WindowsFormsApp1.Controller
                 foreach (String ch in ar)
                 {
                     //Move in sets es un metodo para moverme entre conjuntos
-
+                    simbolo = ch;
                     conjunto = moveInSet(conjunto, ch);
-                    
+                    if (conjunto.Count == 0)
+                    {
+                        simbolo = ch.ToString();
+                        EvaluatorController.Instance.getError(ch, 0);
+                        break;
+                    }
                     HashSet<Estado> temp = new HashSet<Estado>();
                     IEnumerator<Estado> iter = conjunto.GetEnumerator();
 
@@ -231,7 +237,9 @@ namespace WindowsFormsApp1.Controller
                     conjunto = moveInSet(conjunto, ch.ToString());
                     if (conjunto.Count == 0)
                     {
+                        simbolo = ch.ToString();
                         EvaluatorController.Instance.getError(ch.ToString(), i);
+                        break;
                     }
                     HashSet<Estado> temp = new HashSet<Estado>();
                     IEnumerator<Estado> iter = conjunto.GetEnumerator();
@@ -253,10 +261,7 @@ namespace WindowsFormsApp1.Controller
                     conjunto = temp;
 
                 }
-
             }
-
-
             bool response = false;
 
             foreach (Estado aceptation_State in aceptacion)
@@ -272,11 +277,16 @@ namespace WindowsFormsApp1.Controller
             }
             else
             {
+                error = "No Existe transicion con " + simbolo + " o el ultimo simbolo no llego a un estado aceptador";
+                simbolo = "";
                 return false;
             }
         }
 
-
+        public String getError()
+        {
+            return error;
+        }
 
 
         public void generarDOT(String nombreArchivo, String pngname, Automata.Automata automataFinito)
