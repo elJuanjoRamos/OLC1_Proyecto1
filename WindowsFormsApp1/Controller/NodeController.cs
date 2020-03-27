@@ -366,7 +366,8 @@ namespace WindowsFormsApp1.Controller
                     }
 
                     regularExpression.Add(a);
-                } else
+                } 
+                else
                 {
                     if (nroot.Element.Equals("+"))
                     {
@@ -396,7 +397,10 @@ namespace WindowsFormsApp1.Controller
                     }
                     else if (nroot.Element.Equals("?"))
                     {
+
+                        regularExpression.Add("(");
                         ConvertExpression(nroot.LeftChild);
+                        regularExpression.Add(")");
                         regularExpression.Add("?");
 
                         /*regularExpression.Add("(");

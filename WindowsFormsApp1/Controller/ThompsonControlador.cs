@@ -296,7 +296,7 @@ namespace WindowsFormsApp1.Controller
             texto += "\trankdir=LR;" + "\n";
 
             texto += "\tgraph [label=\"" + nombreArchivo + "\", labelloc=t, fontsize=20]; \n";
-            texto += "\tnode [shape=doublecircle, style = filled,color = mediumseagreen];";
+            texto += "\tnode [shape=doublecircle, style = filled];";
             //listar estados de aceptación
             for (int i = 0; i < automataFinito.Aceptacion.Count; i++)
             {
@@ -305,7 +305,7 @@ namespace WindowsFormsApp1.Controller
             //
             texto += ";" + "\n";
             texto += "\tnode [shape=circle];" + "\n";
-            texto += "\tnode [color=midnightblue,fontcolor=white];\n" + "	edge [color=red];" + "\n";
+            texto += "\n" + "	edge [color=black];" + "\n";
 
             texto += "\tsecret_node [style=invis];\n" + "	secret_node -> " + automataFinito.Inicio + " [label=\"inicio\"];" + "\n";
             //transiciones
